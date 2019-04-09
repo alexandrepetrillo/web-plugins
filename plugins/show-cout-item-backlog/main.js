@@ -45,7 +45,7 @@ rtb.onReady(() => {
                     rtb.board.widgets.update([{ id: cptId, x: jira.bounds.left + jira.bounds.width, y: jira.bounds.top }])
                   }
                 }
-              } else if (w.type === 'shape') { //on a déplacer un compteur, je le repositionne sur sa jira
+              } else if (w.type === 'SHAPE') { //on a déplacer un compteur, je le repositionne sur sa jira
                 var jiraId = cptToJira[w.id]
                 var jiras = await rtb.board.widgets.get({ id: jiraId })
                 if (jiras[0]) {
