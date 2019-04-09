@@ -1,3 +1,6 @@
+var jiraToCpt = {};
+var cptToJira = {};
+
 rtb.onReady(() => {
   rtb.initialize({
     extensionPoints: {
@@ -9,39 +12,49 @@ rtb.onReady(() => {
 
           // Get selected widgets
           let selectedWidgets = await rtb.board.selection.get()
-          console.log(selectedWidgets)
+          let stickers = selectedWidgets.filter(widget => widget.type === 'JIRACARD')
 
-          let stickers = selectedWidgets.filter(widget => widget.type === 'STICKER')
-
-          await rtb.board.widgets.create(stickers.map(sticker => ({
+          var createdWidgets = await rtb.board.widgets.create(stickers.map(sticker => ({
+            createdUserId: sticker.id,
             type: 'shape',
-            text: '3',
             style: {
-              backgroundColor: "transparent",
-              backgroundOpacity: 1,
-              bold: 0,
-              borderColor: "#1a1a1a",
-              borderOpacity: 1,
-              borderStyle: 2,
-              borderWidth: 2,
-              fontFamily: 10,
-              fontSize: 12,
-              highlighting: "",
-              italic: 0,
-              shapeType: 4,
-              strike: 0,
-              textAlign: "c",
-              textAlignVertical: "m",
-              textColor: "#1a1a1a",
+              shapeType: 4
             },
-            x: sticker.x + sticker.bounds.width,
-            y: sticker.y,
+            text: '3',
+            x: sticker.bounds.left + sticker.bounds.width,
+            y: sticker.bounds.top,
             width: 30,
             height: 30,
           })))
 
-          let groups = await rtb.board.groups.get()
-          console.log(groups)
+          createdWidgets.forEach((o, i) => {
+            var cpt = o.id
+            var jira = stickers[i].id
+            jiraToCpt[jira] = cpt
+            cptToJira[cpt] = jira
+          })
+
+          rtb.addListener('WIDGETS_TRANSFORMATION_UPDATED', async e => {
+            e.data.forEach(async (w, i) => {
+              if (w.type === 'JIRACARD') { //on a déplacer une jira, je déplace le compteur
+                var jiras = await rtb.board.widgets.get({ id: w.id })
+                if (jiras[0]) {
+                  var jira = jiras[0]
+                  var cptId = jiraToCpt[jira.id]
+                  if (cptId) {
+                    rtb.board.widgets.update([{ id: cptId, x: jira.bounds.left + jira.bounds.width, y: jira.bounds.top }])
+                  }
+                }
+              } else if (w.type === 'shape') { //on a déplacer un compteur, je le repositionne sur sa jira
+                var jiraId = cptToJira[w.id]
+                var jiras = await rtb.board.widgets.get({ id: jiraId })
+                if (jiras[0]) {
+                  var jira = jiras[0]
+                  rtb.board.widgets.update([{ id: w.id, x: jira.bounds.left + jira.bounds.width, y: jira.bounds.top }])
+                }
+              }
+            })
+          })
 
           // Show success message
           rtb.showNotification('done')
