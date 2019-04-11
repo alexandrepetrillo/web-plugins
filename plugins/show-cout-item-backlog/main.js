@@ -10,7 +10,15 @@ rtb.onReady(() => {
         positionPriority: 1,
         onClick: async () => {
 
-          // Get selected widgets
+          if (localStorage.getItem('widgetIdToJira')) {
+            alert('widgetIdToJira doesnt exists in localStorage')
+          }
+          if (localStorage.getItem('jiraToCout')) {
+            alert('jiraToCout doesnt exists in localStorage')
+          }
+          let widgetIdToJira = json.parse(localStorage.getItem('widgetIdToJira'))
+          let jiraToCout = json.parse(localStorage.getItem('jiraToCout'))
+
           let selectedWidgets = await rtb.board.selection.get()
           let stickers = selectedWidgets.filter(widget => widget.type === 'JIRACARD')
 
@@ -20,7 +28,7 @@ rtb.onReady(() => {
             style: {
               shapeType: 4
             },
-            text: '3',
+            text: widgetIdToJira[sticker.id] ? jiraToCout[widgetIdToJira[sticker.id]] : '',
             x: sticker.bounds.left + sticker.bounds.width,
             y: sticker.bounds.top,
             width: 30,
@@ -36,6 +44,7 @@ rtb.onReady(() => {
 
           rtb.addListener('WIDGETS_TRANSFORMATION_UPDATED', async e => {
             e.data.forEach(async (w, i) => {
+              
               if (w.type === 'JIRACARD') { //on a déplacer une jira, je déplace le compteur
                 var jiras = await rtb.board.widgets.get({ id: w.id })
                 if (jiras[0]) {
@@ -56,7 +65,6 @@ rtb.onReady(() => {
             })
           })
 
-          // Show success message
           rtb.showNotification('done')
         }
       }
