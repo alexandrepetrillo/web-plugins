@@ -10,14 +10,14 @@ rtb.onReady(() => {
         positionPriority: 1,
         onClick: async () => {
 
-          var widget_widgetIdToJira = rtb.board.widgets.get({type:'SHAPE'}).filter(w => w.text.indexOf('widgetIdToJira')===0)
+          var widget_widgetIdToJira = (await rtb.board.widgets.get({type:'SHAPE'})).filter(w => w.text.indexOf('widgetIdToJira')===0)
           if (widget_widgetIdToJira.length === 0){
             alert('Widget avec les widget_widgetIdToJira introuvable. ex: widgetIdToJira={"3074457346549413209":"SIX-7604"}');
             return
           }
           eval(widget_widgetIdToJira[0].text)
 
-          var widget_jiraToCout = rtb.board.widgets.get({type:'SHAPE'}).filter(w => w.text.indexOf('jiraToCout')===0)
+          var widget_jiraToCout = (await rtb.board.widgets.get({type:'SHAPE'})).filter(w => w.text.indexOf('jiraToCout')===0)
           if (widget_jiraToCout.length === 0){
             alert('Widget avec les widget_jiraToCout introuvable. ex: widget_jiraToCout={"SIX-7604":"1.5"}');
             return
