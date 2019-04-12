@@ -1,3 +1,5 @@
+var jiraToCpt = {};
+var cptToJira = {};
 /*
 
 }, t.prototype.sortWidgets = function(t, e) {
