@@ -10,30 +10,39 @@ rtb.onReady(() => {
         positionPriority: 1,
         onClick: async () => {
 
-          if (localStorage.getItem('widgetIdToJira')) {
-            alert('widgetIdToJira doesnt exists in localStorage')
+          var widget_widgetIdToJira = rtb.board.widgets.get({type:'SHAPE'}).filter(w => w.text.indexOf('widgetIdToJira')===0)
+          if (widget_widgetIdToJira.length === 0){
+            alert('Widget avec les widget_widgetIdToJira introuvable. ex: widgetIdToJira={"3074457346549413209":"SIX-7604"}');
+            return
           }
-          if (localStorage.getItem('jiraToCout')) {
-            alert('jiraToCout doesnt exists in localStorage')
-          }
-          let widgetIdToJira = json.parse(localStorage.getItem('widgetIdToJira'))
-          let jiraToCout = json.parse(localStorage.getItem('jiraToCout'))
+          eval(widget_widgetIdToJira[0].text)
 
+          var widget_jiraToCout = rtb.board.widgets.get({type:'SHAPE'}).filter(w => w.text.indexOf('jiraToCout')===0)
+          if (widget_jiraToCout.length === 0){
+            alert('Widget avec les widget_jiraToCout introuvable. ex: widget_jiraToCout={"SIX-7604":"1.5"}');
+            return
+          }
+          eval(widget_jiraToCout[0].text)
+          
           let selectedWidgets = await rtb.board.selection.get()
           let stickers = selectedWidgets.filter(widget => widget.type === 'JIRACARD')
 
-          var createdWidgets = await rtb.board.widgets.create(stickers.map(sticker => ({
-            createdUserId: sticker.id,
-            type: 'shape',
-            style: {
-              shapeType: 4
-            },
-            text: widgetIdToJira[sticker.id] ? jiraToCout[widgetIdToJira[sticker.id]] : '',
-            x: sticker.bounds.left + sticker.bounds.width,
-            y: sticker.bounds.top,
-            width: 30,
-            height: 30,
-          })))
+          var createdWidgets = await rtb.board.widgets.create(
+            stickers
+            .filter(sticker => widgetIdToJira[sticker.id] && jiraToCout[widgetIdToJira[sticker.id]])
+            .map(sticker => ({
+              createdUserId: sticker.id,
+              type: 'shape',
+              style: {
+                shapeType: 4
+              },
+              text: jiraToCout[widgetIdToJira[sticker.id]],
+              x: sticker.bounds.left + sticker.bounds.width,
+              y: sticker.bounds.top,
+              width: 30,
+              height: 30,
+            }))
+          )
 
           createdWidgets.forEach((o, i) => {
             var cpt = o.id
