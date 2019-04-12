@@ -1,5 +1,13 @@
-var jiraToCpt = {};
-var cptToJira = {};
+/*
+
+}, t.prototype.sortWidgets = function(t, e) {
+
+var map = {};
+t.forEach(elem => {map[elem._box.widgetId] = elem.key});
+console.log(JSON.stringify(map));
+
+*/
+
 
 rtb.onReady(() => {
   rtb.initialize({
