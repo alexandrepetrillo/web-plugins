@@ -9,7 +9,7 @@ rtb.onReady(() => {
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
-
+/*
           var widget_widgetIdToJira = rtb.board.widgets.get({type:'SHAPE'}).filter(w => w.text.indexOf('widgetIdToJira')===0)
           if (widget_widgetIdToJira.length === 0){
             alert('Widget avec les widget_widgetIdToJira introuvable. ex: widgetIdToJira={"3074457346549413209":"SIX-7604"}');
@@ -23,7 +23,7 @@ rtb.onReady(() => {
             return
           }
           eval(widget_jiraToCout[0].text)
-          
+          */
           let selectedWidgets = await rtb.board.selection.get()
           let stickers = selectedWidgets.filter(widget => widget.type === 'JIRACARD')
 
