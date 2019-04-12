@@ -24,7 +24,7 @@ rtb.onReady(() => {
           }
           eval(widget_jiraToCout[0].text)
           */
-          let selectedWidgets = await rtb.board.selection.get()
+          /*let selectedWidgets = await rtb.board.selection.get()
           let stickers = selectedWidgets.filter(widget => widget.type === 'JIRACARD')
 
           var createdWidgets = await rtb.board.widgets.create(
@@ -73,7 +73,7 @@ rtb.onReady(() => {
               }
             })
           })
-
+*/
           rtb.showNotification('done')
         }
       }
