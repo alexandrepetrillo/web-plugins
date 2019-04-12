@@ -1,5 +1,6 @@
 var jiraToCpt = {};
 var cptToJira = {};
+var listenerAdded = false;
 /*
 
 }, t.prototype.sortWidgets = function(t, e) {
@@ -19,6 +20,10 @@ rtb.onReady(() => {
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
+
+          await rtb.board.widgets.deleteById (
+            (await rtb.board.widgets.get({type:'SHAPE'})).filter(w => w.style.shapeType===4 && w.width===32).map(w => w.id)
+          )
 
           /*var widget_widgetIdToJira = (await rtb.board.widgets.get({type:'SHAPE'})).filter(w => w.text.indexOf('widgetIdToJira')===0)
           if (widget_widgetIdToJira.length === 0){
@@ -61,28 +66,32 @@ rtb.onReady(() => {
             cptToJira[cpt] = jira
           })
 
-          rtb.addListener('WIDGETS_TRANSFORMATION_UPDATED', async e => {
-            e.data.forEach(async (w, i) => {
-              
-              if (w.type === 'JIRACARD') { //on a déplacer une jira, je déplace le compteur
-                var jiras = await rtb.board.widgets.get({ id: w.id })
-                if (jiras[0]) {
-                  var jira = jiras[0]
-                  var cptId = jiraToCpt[jira.id]
-                  if (cptId) {
-                    rtb.board.widgets.update([{ id: cptId, x: jira.bounds.left + jira.bounds.width, y: jira.bounds.top }])
+          if(!listenerAdded) {
+            listenerAdded = true
+            
+            rtb.addListener('WIDGETS_TRANSFORMATION_UPDATED', async e => {
+              e.data.forEach(async (w, i) => {
+                
+                if (w.type === 'JIRACARD') { //on a déplacer une jira, je déplace le compteur
+                  var jiras = await rtb.board.widgets.get({ id: w.id })
+                  if (jiras[0]) {
+                    var jira = jiras[0]
+                    var cptId = jiraToCpt[jira.id]
+                    if (cptId) {
+                      rtb.board.widgets.update([{ id: cptId, x: jira.bounds.left + jira.bounds.width, y: jira.bounds.top }])
+                    }
+                  }
+                } else if (w.type === 'SHAPE') { //on a déplacer un compteur, je le repositionne sur sa jira
+                  var jiraId = cptToJira[w.id]
+                  var jiras = await rtb.board.widgets.get({ id: jiraId })
+                  if (jiras[0]) {
+                    var jira = jiras[0]
+                    rtb.board.widgets.update([{ id: w.id, x: jira.bounds.left + jira.bounds.width, y: jira.bounds.top }])
                   }
                 }
-              } else if (w.type === 'SHAPE') { //on a déplacer un compteur, je le repositionne sur sa jira
-                var jiraId = cptToJira[w.id]
-                var jiras = await rtb.board.widgets.get({ id: jiraId })
-                if (jiras[0]) {
-                  var jira = jiras[0]
-                  rtb.board.widgets.update([{ id: w.id, x: jira.bounds.left + jira.bounds.width, y: jira.bounds.top }])
-                }
-              }
+              })
             })
-          })
+          }
 
           rtb.showNotification('done')
         }
