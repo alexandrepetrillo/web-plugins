@@ -4898,6 +4898,8 @@
                             case o.a.RALLYCARD:
                                 return t.getRallyCSV(e);
                             case o.a.CARD:
+                                window._JIRA= window._JIRA || {};
+                                window._JIRA[e.box.widgetId] = e.data['ns:jiraCard'];
                                 return t.getCardCSV(e)
                         }
                         return []
