@@ -21,6 +21,7 @@ rtb.onReady(() => {
         positionPriority: 1,
         onClick: async () => {
           var jiraIds = localStorage.getItem('jiraIds');
+          console.log('jiraIds');
           console.log(jiraIds);
           if (!jiraIds) {
             rtb.showNotification("La table de correspondance WIDGET_ID <=> JIRA_ID n'a pas été trouvée, veuillez faire un export CSV pour l'établir.");
