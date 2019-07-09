@@ -20,8 +20,10 @@ rtb.onReady(() => {
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
-          if (!window._JIRA) {
-            console.log("La table de correspondance WIDGET_ID <=> JIRA_ID n'a pas été trouvée, veuillez faire un export CSV pour l'établir.");
+          var jiraIds = localStorage.getItem('jiraIds');
+          if (!jiraIds) {
+            rtb.showNotification("La table de correspondance WIDGET_ID <=> JIRA_ID n'a pas été trouvée, veuillez faire un export CSV pour l'établir.");
+            return;
           }
           var ids = (await rtb.board.selection.get()).filter(w => w.type==="CARD").map(w => window._JIRA[w.id]);
           rtb.showNotification(ids)
