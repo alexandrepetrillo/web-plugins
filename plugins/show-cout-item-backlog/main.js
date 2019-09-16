@@ -22,17 +22,18 @@ rtb.onReady(() => {
         onClick: async () => {
           var unknowJiras = [];
           var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
-            if (!widgetIdToJira[w.id]) {
+            var jira = widgetIdToJira[w.id]
+            if (!jira) {
               unknowJiras.push(w.title);
               console.log('jira inconue ' + w.title)
             }
-            return widgetIdToJira[w.id]
+            return jira
           })
           .filter(x => x);
 
           var unknowCosts = [];
           var cost = jiras.map( jira => {
-            if (jiraToCost[jira] == '') {
+            if (jiraToCost[jira] == undefined || jiraToCost[jira] == '') {
               console.log('Cout indéfini ' + jira)
               unknowCosts.push(jira);
               return 0
@@ -40,14 +41,14 @@ rtb.onReady(() => {
               return parseFloat(jiraToCost[jira])
             }
           })
-          .reduce ( (a,b)=>a+b ,0);
+          .reduce ((a,b)=>a+b, 0);
 
           var warn = '';
           if (unknowJiras.length>0 ) {
-            warn += unknowJiras.length + ' jira inconnue(s)';
+            warn += ' '+ unknowJiras.length + ' jira(s) inconnue(s)';
           }
           if (unknowCosts.length>0 ) {
-            warn += unknowCosts.length + ' cout inconnu(s)';
+            warn += ' '+ unknowCosts.length + ' coût(s) inconnu(s)';
           }
           
           rtb.showNotification('Total ' + cost + warn);
