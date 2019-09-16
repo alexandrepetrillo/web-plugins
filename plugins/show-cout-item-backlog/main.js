@@ -20,10 +20,37 @@ rtb.onReady(() => {
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
-          var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => widgetIdToJira[w.id]);
-          var cost = jiras.map( jira => jiraToCost[jira] == '' ? 0 : parseFloat(jiraToCost[jira])).reduce ( (a,b)=>a+b ,0);
-          console.log(cost);
-          rtb.showNotification(cost);
+          var unknowJiras = [];
+          var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
+            if (!widgetIdToJira[w.id]) {
+              unknowJiras.push(w.title);
+              console.log('jira inconue ' + w.title)
+            }
+            return widgetIdToJira[w.id]
+          })
+          .filter(x => x);
+
+          var unknowCosts = [];
+          var cost = jiras.map( jira => {
+            if (jiraToCost[jira] == '') {
+              console.log('Cout indéfini ' + jira)
+              unknowCosts.push(jira);
+              return 0
+            } else{
+              return parseFloat(jiraToCost[jira])
+            }
+          })
+          .reduce ( (a,b)=>a+b ,0);
+
+          var warn = '';
+          if (unknowJiras.length>0 ) {
+            warn += unknowJiras.length + ' jira inconnue(s)';
+          }
+          if (unknowCosts.length>0 ) {
+            warn += unknowCosts.length + ' cout inconnu(s)';
+          }
+          
+          rtb.showNotification('Total ' + cost + warn);
 
           //await rtb.board.widgets.deleteById(
           //  (await rtb.board.widgets.get({ type: 'SHAPE' })).filter(w => w.style.shapeType === 4 && w.width === 32).map(w => w.id)
