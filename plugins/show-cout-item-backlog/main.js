@@ -20,9 +20,10 @@ rtb.onReady(() => {
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
-          var ids = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => widgetIdToJira[w.id]);
-          console.log(ids);
-          rtb.showNotification(ids)
+          var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => widgetIdToJira[w.id]);
+          var cost = jiras.map( jira => jiraToCost[jira] == '' ? 0 : parseFloat(jiraToCost[jira])).reduce ( (a,b)=>a+b ,0);
+          console.log(cost);
+          rtb.showNotification(cost);
 
           //await rtb.board.widgets.deleteById(
           //  (await rtb.board.widgets.get({ type: 'SHAPE' })).filter(w => w.style.shapeType === 4 && w.width === 32).map(w => w.id)
@@ -99,7 +100,7 @@ rtb.onReady(() => {
           //  })
           //}
 
-          rtb.showNotification('done')
+         // rtb.showNotification('done')
         }
       }
     }
