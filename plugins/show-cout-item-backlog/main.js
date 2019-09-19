@@ -1,6 +1,55 @@
 
 rtb.onReady(() => {
 
+  function getCost() {
+    var unknowJiras = [];
+    var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
+      //var jira = widgetIdToJira[w.id]
+      var jira = jiraIdByTitle[w.title]
+      if (!jira) {
+        unknowJiras.push(w.id);
+      }
+      return jira
+    })
+    .filter(x => x);
+    
+    
+    var unknowCosts = [];
+    var cost = jiras.map( jira => {
+      if (jiraCostById[jira] == undefined || jiraCostById[jira] == '') {
+        console.log('Cout indéfini ' + jira)
+        unknowCosts.push(jira);
+        return 0
+      } else{
+        return parseFloat(jiraCostById[jira])
+      }
+    })
+    .reduce ((a,b)=>a+b, 0);
+    
+  
+   var unknowCosts = [];
+   var cost = jiras.map( jira => {
+     if (jiraCostById[jira] == undefined || jiraCostById[jira] == '') {
+       console.log('Cout indéfini ' + jira)
+       unknowCosts.push(jira);
+       return 0
+     } else{
+       return parseFloat(jiraCostById[jira])
+     }
+   })
+   .reduce ((a,b)=>a+b, 0);
+  
+    var warn = '';
+    if (unknowJiras.length>0 ) {
+      warn += ' '+ unknowJiras.length + ' jira(s) inconnue(s)';
+    }
+    if (unknowCosts.length>0 ) {
+      warn += ' '+ unknowCosts.length + ' coût(s) inconnu(s)';
+    }
+  
+    return {cost, warn}
+  }
+  
   try {
   // chargement des cout jira
   var jiraCostById = {}
@@ -75,52 +124,3 @@ rtb.onReady(() => {
     }
   })
 })
-
-function getCost() {
-  var unknowJiras = [];
-  var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
-    //var jira = widgetIdToJira[w.id]
-    var jira = jiraIdByTitle[w.title]
-    if (!jira) {
-      unknowJiras.push(w.id);
-    }
-    return jira
-  })
-  .filter(x => x);
-  
-  
-  var unknowCosts = [];
-  var cost = jiras.map( jira => {
-    if (jiraCostById[jira] == undefined || jiraCostById[jira] == '') {
-      console.log('Cout indéfini ' + jira)
-      unknowCosts.push(jira);
-      return 0
-    } else{
-      return parseFloat(jiraCostById[jira])
-    }
-  })
-  .reduce ((a,b)=>a+b, 0);
-  
-
- var unknowCosts = [];
- var cost = jiras.map( jira => {
-   if (jiraCostById[jira] == undefined || jiraCostById[jira] == '') {
-     console.log('Cout indéfini ' + jira)
-     unknowCosts.push(jira);
-     return 0
-   } else{
-     return parseFloat(jiraCostById[jira])
-   }
- })
- .reduce ((a,b)=>a+b, 0);
-
-  var warn = '';
-  if (unknowJiras.length>0 ) {
-    warn += ' '+ unknowJiras.length + ' jira(s) inconnue(s)';
-  }
-  if (unknowCosts.length>0 ) {
-    warn += ' '+ unknowCosts.length + ' coût(s) inconnu(s)';
-  }
-
-  return {cost, warn}
-}
