@@ -46,7 +46,6 @@ rtb.onReady(() => {
     if (unknowCosts.length>0 ) {
       warn += ' '+ unknowCosts.length + ' coût(s) inconnu(s)';
     }
-    console.log(cost, warn)
     return {cost, warn}
   }
 
@@ -80,9 +79,10 @@ rtb.onReady(() => {
     if(x.data.length != 1 ){
       return
     }
-    var {cost: cost, warn: warn} = await getCost()
-    if (warn == '') {
-      rtb.showNotification(cost)
+    var costWarn = await getCost()
+    console.log(costWarn)
+    if (costWarn.warn == '') {
+      rtb.showNotification(costWarn.cost)
     }
   });
   
