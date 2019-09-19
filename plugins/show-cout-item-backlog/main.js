@@ -21,13 +21,22 @@ rtb.onReady(() => {
         positionPriority: 1,
         onClick: async () => {
 
+          var jiraCost = {}
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
               console.log(this.responseText);
+              var lines = this.responseText.split('\r\n')
+              lines.forEach(line => {
+                var elems = line.split("\t")
+                jiraCost[elems[0]] = elem[1]
+              })
+              console.log(jiraCost)
+            } else {
+              console.log(this)
             }
           };
-          xmlhttp.open('GET', 'https://docs.google.com/spreadsheets/d/1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY/export?format=csv&id=1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY&gid=1098716530');
+          xmlhttp.open('GET', 'https://docs.google.com/spreadsheets/d/1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY/export?format=tsv&id=1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY&gid=1098716530');
           xmlhttp.send();
 
           var unknowJiras = [];
