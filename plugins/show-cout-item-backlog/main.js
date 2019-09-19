@@ -80,7 +80,7 @@ rtb.onReady(() => {
     if(x.data.length != 1 ){
       return
     }
-    var {cost, warn} = await getCost()
+    var {cost: cost, warn: warn} = await getCost()
     if (warn == '') {
       rtb.showNotification(cost)
     }
