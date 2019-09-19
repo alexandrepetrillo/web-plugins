@@ -20,6 +20,16 @@ rtb.onReady(() => {
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
+
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              console.log(this.responseText);
+            }
+          };
+          xmlhttp.open('GET', 'https://docs.google.com/spreadsheets/d/1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY/export?format=csv&id=1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY&gid=1098716530');
+          xmlhttp.send();
+
           var unknowJiras = [];
           var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
             var jira = widgetIdToJira[w.id]
