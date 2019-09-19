@@ -46,7 +46,7 @@ rtb.onReady(() => {
     if (unknowCosts.length>0 ) {
       warn += ' '+ unknowCosts.length + ' coût(s) inconnu(s)';
     }
-  
+    console.log(cost, warn)
     return {cost, warn}
   }
 
