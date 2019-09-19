@@ -28,7 +28,7 @@ rtb.onReady(() => {
         jiraCostById[elems[0]] = elems[1]
         jiraIdByTitle[elems[2]] = elems[0]
       })
-      console.log(jiraCost)
+      console.log(jiraCostById)
     } else {
       console.log(this)
     }
@@ -39,20 +39,20 @@ rtb.onReady(() => {
     console.log(e)
   }
 
-  miro.addListener('SELECTION_UPDATED', (widget) => {
+  rtb.addListener('SELECTION_UPDATED', (widget) => {
     console.log(widget.title)
     var jira = jiraIdByTitle[widget.title]
     var cost = jiraCostById[jira]
     if (cost && cost != ''){
       var cost = parseFloat(jiraCostById[jira])
-      miro.showNotification(cost);
+      rtb.showNotification(cost);
     }
   })
   
   rtb.initialize({
     extensionPoints: {
       bottomBar: {
-        title: 'Sum selected JIRA !',
+        title: 'Somme les JIRAs sélectionées !',
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
@@ -102,7 +102,7 @@ rtb.onReady(() => {
             warn += ' '+ unknowCosts.length + ' coût(s) inconnu(s)';
           }
           
-          rtb.showNotification('Total ' + cost + warn);
+          rtb.showNotification('Coût total ' + cost + warn);
 
           //await rtb.board.widgets.deleteById(
           //  (await rtb.board.widgets.get({ type: 'SHAPE' })).filter(w => w.style.shapeType === 4 && w.width === 32).map(w => w.id)
