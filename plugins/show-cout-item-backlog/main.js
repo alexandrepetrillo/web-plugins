@@ -13,6 +13,32 @@ console.log(JSON.stringify(map));
 
 
 rtb.onReady(() => {
+
+  try {
+  // chargement des cout jira
+  var jiraCostById = {}
+  var jiraIdByTitle = {}
+  var xmlhttp = new XMLHttpRequest()
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(this.responseText);
+      var lines = this.responseText.split('\r\n')
+      lines.forEach(line => {
+        var elems = line.split("\t")
+        jiraCostById[elems[0]] = elems[1]
+        jiraIdByTitle[elems[2]] = elems[0]
+      })
+      console.log(jiraCost)
+    } else {
+      console.log(this)
+    }
+  };
+  xmlhttp.open('GET', 'https://docs.google.com/spreadsheets/d/1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY/export?format=tsv&id=1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY&gid=1098716530');
+  xmlhttp.send()
+  } catch (e) {
+    console.log(e)
+  }
+  
   rtb.initialize({
     extensionPoints: {
       bottomBar: {
@@ -20,29 +46,7 @@ rtb.onReady(() => {
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
-
-          // chargement des cout jira
-          var jiraCostById = {}
-          var jiraIdByTitle = {}
-          var xmlhttp = new XMLHttpRequest();
-          xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-              console.log(this.responseText);
-              var lines = this.responseText.split('\r\n')
-              lines.forEach(line => {
-                var elems = line.split("\t")
-                jiraCostById[elems[0]] = elems[1]
-                jiraIdByTitle[elems[2]] = elems[0]
-              })
-              console.log(jiraCost)
-            } else {
-              console.log(this)
-            }
-          };
-          xmlhttp.open('GET', 'https://docs.google.com/spreadsheets/d/1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY/export?format=tsv&id=1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY&gid=1098716530');
-          xmlhttp.send();
-
-          
+         
           var unknowJiras = [];
           var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
             //var jira = widgetIdToJira[w.id]
