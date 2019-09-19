@@ -1,16 +1,3 @@
-var jiraToCpt = {};
-var cptToJira = {};
-var listenerAdded = false;
-/*
-
-}, t.prototype.sortWidgets = function(t, e) {
-
-var map = {};
-t.forEach(elem => {map[elem._box.widgetId] = elem.key});
-console.log(JSON.stringify(map));
-
-*/
-
 
 rtb.onReady(() => {
 
@@ -48,7 +35,7 @@ rtb.onReady(() => {
     if (warn == '') {
       rtb.showNotification(cost)
     }
-  })
+  });
   
   rtb.initialize({
     extensionPoints: {
@@ -61,25 +48,6 @@ rtb.onReady(() => {
          
           var {cost, warn} = getCost()
           rtb.showNotification('Coût total ' + cost + warn)
-
-          //await rtb.board.widgets.deleteById(
-          //  (await rtb.board.widgets.get({ type: 'SHAPE' })).filter(w => w.style.shapeType === 4 && w.width === 32).map(w => w.id)
-          //)
-
-          /*var widget_widgetIdToJira = (await rtb.board.widgets.get({type:'SHAPE'})).filter(w => w.text.indexOf('widgetIdToJira')===0)
-          if (widget_widgetIdToJira.length === 0){
-            alert('Widget avec les widget_widgetIdToJira introuvable. ex: widgetIdToJira={"3074457346549413209":"SIX-7604"}');
-            return
-          }
-          eval(widget_widgetIdToJira[0].text)*/
-
-          /*var widget_jiraToCout = (await rtb.board.widgets.get({type:'SHAPE'})).filter(w => w.text.indexOf('jiraToCout')===0)
-          if (widget_jiraToCout.length === 0){
-            alert('Widget avec les widget_jiraToCout introuvable. ex: widget_jiraToCout={"SIX-7604":"1.5"}');
-            return
-          }
-          eval(widget_jiraToCout[0].text)
-          */
           /*
            let selectedWidgets = await rtb.board.selection.get()
            let stickers = selectedWidgets.filter(widget => widget.type === 'JIRACARD')
@@ -102,42 +70,6 @@ rtb.onReady(() => {
                       }))
                     )
           */
-          /*
-                    createdWidgets.forEach((o, i) => {
-                      var cpt = o.id
-                      var jira = stickers[i].id
-                      jiraToCpt[jira] = cpt
-                      cptToJira[cpt] = jira
-                    })
-          */
-          //if(!listenerAdded) {
-          //  listenerAdded = true
-          //  
-          //  rtb.addListener('WIDGETS_TRANSFORMATION_UPDATED', async e => {
-          //    e.data.forEach(async (w, i) => {
-          //      
-          //      if (w.type === 'JIRACARD') { //on a déplacer une jira, je déplace le compteur
-          //        var jiras = await rtb.board.widgets.get({ id: w.id })
-          //        if (jiras[0]) {
-          //          var jira = jiras[0]
-          //          var cptId = jiraToCpt[jira.id]
-          //          if (cptId) {
-          //            rtb.board.widgets.update([{ id: cptId, x: jira.bounds.left + jira.bounds.width, y: jira.bounds.top }])
-          //          }
-          //        }
-          //      } else if (w.type === 'SHAPE') { //on a déplacer un compteur, je le repositionne sur sa jira
-          //        var jiraId = cptToJira[w.id]
-          //        var jiras = await rtb.board.widgets.get({ id: jiraId })
-          //        if (jiras[0]) {
-          //          var jira = jiras[0]
-          //          rtb.board.widgets.update([{ id: w.id, x: jira.bounds.left + jira.bounds.width, y: jira.bounds.top }])
-          //        }
-          //      }
-          //    })
-          //  })
-          //}
-
-         // rtb.showNotification('done')
         }
       }
     }
