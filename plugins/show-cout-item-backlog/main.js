@@ -21,7 +21,9 @@ rtb.onReady(() => {
         positionPriority: 1,
         onClick: async () => {
 
-          var jiraCost = {}
+          // chargement des cout jira
+          var jiraCostById = {}
+          var jiraIdByTitle = {}
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -29,7 +31,8 @@ rtb.onReady(() => {
               var lines = this.responseText.split('\r\n')
               lines.forEach(line => {
                 var elems = line.split("\t")
-                jiraCost[elems[0]] = elem[1]
+                jiraCostById[elems[0]] = elems[1]
+                jiraIdByTitle[elems[2]] = elems[0]
               })
               console.log(jiraCost)
             } else {
@@ -39,28 +42,43 @@ rtb.onReady(() => {
           xmlhttp.open('GET', 'https://docs.google.com/spreadsheets/d/1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY/export?format=tsv&id=1cQeYW0F-ryag2_9RraJGNB2wUete6FJ31JivIit5ueY&gid=1098716530');
           xmlhttp.send();
 
+          
           var unknowJiras = [];
           var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
-            var jira = widgetIdToJira[w.id]
+            //var jira = widgetIdToJira[w.id]
+            var jira = jiraIdByTitle[w.title]
             if (!jira) {
-              unknowJiras.push(w.title);
-              console.log('jira inconue ' + w.title)
+              unknowJiras.push(w.id);
             }
             return jira
           })
           .filter(x => x);
-
+          
+          
           var unknowCosts = [];
           var cost = jiras.map( jira => {
-            if (jiraToCost[jira] == undefined || jiraToCost[jira] == '') {
+            if (jiraCostById[jira] == undefined || jiraCostById[jira] == '') {
               console.log('Cout indéfini ' + jira)
               unknowCosts.push(jira);
               return 0
             } else{
-              return parseFloat(jiraToCost[jira])
+              return parseFloat(jiraCostById[jira])
             }
           })
           .reduce ((a,b)=>a+b, 0);
+          
+
+         var unknowCosts = [];
+         var cost = jiras.map( jira => {
+           if (jiraCostById[jira] == undefined || jiraCostById[jira] == '') {
+             console.log('Cout indéfini ' + jira)
+             unknowCosts.push(jira);
+             return 0
+           } else{
+             return parseFloat(jiraCostById[jira])
+           }
+         })
+         .reduce ((a,b)=>a+b, 0);
 
           var warn = '';
           if (unknowJiras.length>0 ) {
