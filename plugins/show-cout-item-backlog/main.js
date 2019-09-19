@@ -79,10 +79,9 @@ rtb.onReady(() => {
     if(x.data.length != 1 ){
       return
     }
-    var costWarn = await getCost()
-    console.log(costWarn)
-    if (costWarn.warn == '') {
-      rtb.showNotification(costWarn.cost)
+    var {cost, warn} = await getCost()
+    if (warn == '') {
+      rtb.showNotification('' + cost)
     }
   });
   
