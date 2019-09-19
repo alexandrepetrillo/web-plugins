@@ -1,9 +1,10 @@
 
 rtb.onReady(() => {
 
-  function getCost() {
+  async function getCost() {
     var unknowJiras = [];
-    var jiras = [] /*(await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
+    var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
+      //var jira = widgetIdToJira[w.id]
       var jira = jiraIdByTitle[w.title]
       if (!jira) {
         unknowJiras.push(w.id);
@@ -11,7 +12,7 @@ rtb.onReady(() => {
       return jira
     })
     .filter(x => x);
-    */
+    
     
     var unknowCosts = [];
     var cost = jiras.map( jira => {
@@ -74,12 +75,12 @@ rtb.onReady(() => {
     console.log(e)
   }
 
-  rtb.addListener('SELECTION_UPDATED', (x) => {
+  rtb.addListener('SELECTION_UPDATED', async (x) => {
     console.log(x)
     if(x.data.length != 1 ){
       return
     }
-    var {cost, warn} = getCost()
+    var {cost, warn} = await getCost()
     if (warn == '') {
       rtb.showNotification(cost)
     }
@@ -94,7 +95,7 @@ rtb.onReady(() => {
         onClick: async () => {
          
          
-          var {cost, warn} = getCost()
+          var {cost, warn} = await getCost()
           rtb.showNotification('Coût total ' + cost + warn)
           /*
            let selectedWidgets = await rtb.board.selection.get()
