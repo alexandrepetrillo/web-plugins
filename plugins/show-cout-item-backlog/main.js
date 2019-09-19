@@ -39,8 +39,12 @@ rtb.onReady(() => {
     console.log(e)
   }
 
-  rtb.addListener('SELECTION_UPDATED', (widget) => {
-    console.log(widget.title)
+  rtb.addListener('SELECTION_UPDATED', (widgets) => {
+    console.log(widgets)
+    if(widgets.length != 1 ){
+      return
+    }
+    var widget = widgets[0]
     var jira = jiraIdByTitle[widget.title]
     var cost = jiraCostById[jira]
     if (cost && cost != ''){
