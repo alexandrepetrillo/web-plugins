@@ -3,8 +3,7 @@ rtb.onReady(() => {
 
   function getCost() {
     var unknowJiras = [];
-    var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
-      //var jira = widgetIdToJira[w.id]
+    var jiras = [] /*(await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
       var jira = jiraIdByTitle[w.title]
       if (!jira) {
         unknowJiras.push(w.id);
@@ -12,7 +11,7 @@ rtb.onReady(() => {
       return jira
     })
     .filter(x => x);
-    
+    */
     
     var unknowCosts = [];
     var cost = jiras.map( jira => {
@@ -49,7 +48,7 @@ rtb.onReady(() => {
   
     return {cost, warn}
   }
-  
+
   try {
   // chargement des cout jira
   var jiraCostById = {}
