@@ -38,11 +38,21 @@ rtb.onReady(() => {
   } catch (e) {
     console.log(e)
   }
+
+  miro.addListener('SELECTION_UPDATED', (widget) => {
+    console.log(widget.title)
+    var jira = jiraIdByTitle[widget.title]
+    var cost = jiraCostById[jira]
+    if (cost && cost != ''){
+      var cost = parseFloat(jiraCostById[jira])
+      miro.showNotification(cost);
+    }
+  })
   
   rtb.initialize({
     extensionPoints: {
       bottomBar: {
-        title: 'Sticker to shapes',
+        title: 'Sum selected JIRA !',
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
