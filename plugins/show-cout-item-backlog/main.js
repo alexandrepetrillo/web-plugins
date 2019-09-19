@@ -39,17 +39,14 @@ rtb.onReady(() => {
     console.log(e)
   }
 
-  rtb.addListener('SELECTION_UPDATED', (widgets) => {
-    console.log(widgets)
-    if(widgets.length != 1 ){
+  rtb.addListener('SELECTION_UPDATED', (x) => {
+    console.log(x)
+    if(x.data.length != 1 ){
       return
     }
-    var widget = widgets[0]
-    var jira = jiraIdByTitle[widget.title]
-    var cost = jiraCostById[jira]
-    if (cost && cost != ''){
-      var cost = parseFloat(jiraCostById[jira])
-      rtb.showNotification(cost);
+    var {cost, warn} = getCost()
+    if (warn == '') {
+      rtb.showNotification(cost)
     }
   })
   
@@ -61,52 +58,9 @@ rtb.onReady(() => {
         positionPriority: 1,
         onClick: async () => {
          
-          var unknowJiras = [];
-          var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
-            //var jira = widgetIdToJira[w.id]
-            var jira = jiraIdByTitle[w.title]
-            if (!jira) {
-              unknowJiras.push(w.id);
-            }
-            return jira
-          })
-          .filter(x => x);
-          
-          
-          var unknowCosts = [];
-          var cost = jiras.map( jira => {
-            if (jiraCostById[jira] == undefined || jiraCostById[jira] == '') {
-              console.log('Cout indéfini ' + jira)
-              unknowCosts.push(jira);
-              return 0
-            } else{
-              return parseFloat(jiraCostById[jira])
-            }
-          })
-          .reduce ((a,b)=>a+b, 0);
-          
-
-         var unknowCosts = [];
-         var cost = jiras.map( jira => {
-           if (jiraCostById[jira] == undefined || jiraCostById[jira] == '') {
-             console.log('Cout indéfini ' + jira)
-             unknowCosts.push(jira);
-             return 0
-           } else{
-             return parseFloat(jiraCostById[jira])
-           }
-         })
-         .reduce ((a,b)=>a+b, 0);
-
-          var warn = '';
-          if (unknowJiras.length>0 ) {
-            warn += ' '+ unknowJiras.length + ' jira(s) inconnue(s)';
-          }
-          if (unknowCosts.length>0 ) {
-            warn += ' '+ unknowCosts.length + ' coût(s) inconnu(s)';
-          }
-          
-          rtb.showNotification('Coût total ' + cost + warn);
+         
+          var {cost, warn} = getCost()
+          rtb.showNotification('Coût total ' + cost + warn)
 
           //await rtb.board.widgets.deleteById(
           //  (await rtb.board.widgets.get({ type: 'SHAPE' })).filter(w => w.style.shapeType === 4 && w.width === 32).map(w => w.id)
@@ -189,3 +143,52 @@ rtb.onReady(() => {
     }
   })
 })
+
+function getCost() {
+  var unknowJiras = [];
+  var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
+    //var jira = widgetIdToJira[w.id]
+    var jira = jiraIdByTitle[w.title]
+    if (!jira) {
+      unknowJiras.push(w.id);
+    }
+    return jira
+  })
+  .filter(x => x);
+  
+  
+  var unknowCosts = [];
+  var cost = jiras.map( jira => {
+    if (jiraCostById[jira] == undefined || jiraCostById[jira] == '') {
+      console.log('Cout indéfini ' + jira)
+      unknowCosts.push(jira);
+      return 0
+    } else{
+      return parseFloat(jiraCostById[jira])
+    }
+  })
+  .reduce ((a,b)=>a+b, 0);
+  
+
+ var unknowCosts = [];
+ var cost = jiras.map( jira => {
+   if (jiraCostById[jira] == undefined || jiraCostById[jira] == '') {
+     console.log('Cout indéfini ' + jira)
+     unknowCosts.push(jira);
+     return 0
+   } else{
+     return parseFloat(jiraCostById[jira])
+   }
+ })
+ .reduce ((a,b)=>a+b, 0);
+
+  var warn = '';
+  if (unknowJiras.length>0 ) {
+    warn += ' '+ unknowJiras.length + ' jira(s) inconnue(s)';
+  }
+  if (unknowCosts.length>0 ) {
+    warn += ' '+ unknowCosts.length + ' coût(s) inconnu(s)';
+  }
+
+  return {cost, warn}
+}
