@@ -75,8 +75,7 @@ rtb.onReady(() => {
   }
 
   rtb.addListener('SELECTION_UPDATED', async (x) => {
-    console.log(x.data.filter(w => w.type === "CARD"))
-    if(x.data.filter(w => w.type === "CARD").length < 0 ){
+    if(x.data.filter(w => w.type === "CARD").length === 0 ){
       return
     }
     var {cost, warn} = await getCost()
@@ -86,7 +85,7 @@ rtb.onReady(() => {
   rtb.initialize({
     extensionPoints: {
       bottomBar: {
-        title: 'Somme les JIRAs sélectionées !',
+        title: 'Sélectionner les ID JIRA',
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
@@ -101,7 +100,7 @@ rtb.onReady(() => {
           })
           .filter(x => x);
           console.log(jiras.join(', '))
-          copyStringToClipboard(jiras.join(', '))
+          prompt('JIRA sélectionnées', jiras.join(', '))
 
           /*
            let selectedWidgets = await rtb.board.selection.get()
@@ -130,21 +129,3 @@ rtb.onReady(() => {
     }
   })
 })
-
-
-function copyStringToClipboard (str) {
-  // Create new element
-  var el = document.createElement('textarea');
-  // Set value (string to be copied)
-  el.value = str;
-  // Set non-editable to avoid focus and move outside of view
-  el.setAttribute('readonly', '');
-  el.style = {position: 'absolute', left: '-9999px'};
-  document.body.appendChild(el);
-  // Select text inside element
-  el.select();
-  // Copy text to clipboard
-  document.execCommand('copy');
-  // Remove temporary element
-  document.body.removeChild(el);
-}
