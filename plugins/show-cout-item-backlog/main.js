@@ -75,6 +75,7 @@ rtb.onReady(() => {
   }
 
   rtb.addListener('SELECTION_UPDATED', async (x) => {
+    console.log(x.data.filter(w => w.type === "CARD"))
     if(x.data.filter(w => w.type === "CARD").length < 0 ){
       return
     }
@@ -99,6 +100,7 @@ rtb.onReady(() => {
             return jira
           })
           .filter(x => x);
+          console.log(jiras.join(', '))
           copyStringToClipboard(jiras.join(', '))
 
           /*
