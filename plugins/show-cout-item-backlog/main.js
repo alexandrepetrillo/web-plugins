@@ -76,9 +76,7 @@ rtb.onReady(() => {
 
   rtb.addListener('SELECTION_UPDATED', async (x) => {
     var {cost, warn} = await getCost()
-    if (warn == '') {
-      rtb.showNotification('Coût total ' + cost + warn)
-    }
+    rtb.showNotification('Coût total ' + cost + warn)
   });
   
   rtb.initialize({
