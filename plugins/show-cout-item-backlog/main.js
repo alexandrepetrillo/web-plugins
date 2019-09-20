@@ -75,8 +75,7 @@ rtb.onReady(() => {
   }
 
   rtb.addListener('SELECTION_UPDATED', async (x) => {
-  console.log(x)
-    if(x.data.length != 1 ){
+    if(x.data.filter(w => w.type === "CARD").length < 0 ){
       return
     }
     var {cost, warn} = await getCost()
@@ -91,9 +90,17 @@ rtb.onReady(() => {
         positionPriority: 1,
         onClick: async () => {
          
-         
-          var {cost, warn} = await getCost()
-          rtb.showNotification('Coût total ' + cost + warn)
+          var unknowJiras = [];
+          var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
+            var jira = jiraIdByTitle[w.title]
+            if (!jira) {
+              unknowJiras.push(w.id);
+            }
+            return jira
+          })
+          .filter(x => x);
+          copyStringToClipboard(jiras.join(', '))
+
           /*
            let selectedWidgets = await rtb.board.selection.get()
            let stickers = selectedWidgets.filter(widget => widget.type === 'JIRACARD')
@@ -121,3 +128,21 @@ rtb.onReady(() => {
     }
   })
 })
+
+
+function copyStringToClipboard (str) {
+  // Create new element
+  var el = document.createElement('textarea');
+  // Set value (string to be copied)
+  el.value = str;
+  // Set non-editable to avoid focus and move outside of view
+  el.setAttribute('readonly', '');
+  el.style = {position: 'absolute', left: '-9999px'};
+  document.body.appendChild(el);
+  // Select text inside element
+  el.select();
+  // Copy text to clipboard
+  document.execCommand('copy');
+  // Remove temporary element
+  document.body.removeChild(el);
+}
