@@ -138,7 +138,9 @@ rtb.onReady(() => {
         onClick: async () => {
           var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => w.title).map(t => '"' + t + '"')
           prompt('JIRA sélectionnées', jiras.join(', '))
+        }
       }
+    }
   })
   
 })
