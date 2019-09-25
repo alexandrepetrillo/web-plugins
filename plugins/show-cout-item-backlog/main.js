@@ -92,8 +92,17 @@ rtb.onReady(() => {
           console.log(all)
           var {jiras, cost, warn, unknowJiras, unknowCosts} = all
           prompt('JIRA sélectionnées', jiras.join(', '))
+
+          var withoutCost = []
+          (await rtb.board.selection.get()).filter(w => w.type === "CARD").forEach(w => {
+            var jira = jiraIdByTitle[w.title]
+            var cost = jiraCostById[jira]
+            if (!cost) {
+              withoutCost.push(w.id)
+            }
+          })
           
-          await rtb.board.selection.selectWidgets(unknowJiras.concat(unknowCosts))
+          await rtb.board.selection.selectWidgets(withoutCost)
 
           /*
            let selectedWidgets = await rtb.board.selection.get()
