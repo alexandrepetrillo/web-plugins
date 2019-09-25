@@ -39,10 +39,10 @@ rtb.onReady(() => {
   
     var warn = '';
     if (unknowJiras.length>0 ) {
-      warn += ' '+ unknowJiras.length + ', jira(s) inconnue(s)';
+      warn += ', '+ unknowJiras.length + ' jira(s) inconnue(s)';
     }
     if (unknowCosts.length>0 ) {
-      warn += ' '+ unknowCosts.length + ', coût(s) inconnu(s)';
+      warn += ', '+ unknowCosts.length + ' coût(s) inconnu(s)';
     }
     return {cost, warn}
   }
@@ -97,7 +97,6 @@ rtb.onReady(() => {
             return jira
           })
           .filter(x => x);
-          console.log(jiras.join(', '))
           prompt('JIRA sélectionnées', jiras.join(', '))
 
           /*
