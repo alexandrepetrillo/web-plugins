@@ -85,14 +85,6 @@ rtb.onReady(() => {
   rtb.initialize({
     extensionPoints: {
       bottomBar: {
-        title: 'Séléctionner les libellés',
-        svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
-        positionPriority: 2,
-        onClick: async () => {
-          var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => w.title).map(t => '"' + t + '"')
-          prompt('JIRA sélectionnées', jiras.join(', '))
-      },
-      bottomBar: {
         title: 'Sélectionner les ID JIRA',
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
@@ -136,4 +128,17 @@ rtb.onReady(() => {
       }
     }
   })
+
+  rtb.initialize({
+    extensionPoints: {
+      bottomBar: {
+        title: 'Séléctionner les libellés',
+        svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
+        positionPriority: 2,
+        onClick: async () => {
+          var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => w.title).map(t => '"' + t + '"')
+          prompt('JIRA sélectionnées', jiras.join(', '))
+      }
+  })
+  
 })
