@@ -98,6 +98,7 @@ rtb.onReady(() => {
           })
           .filter(x => x);
           prompt('JIRA sélectionnées', jiras.join(', '))
+          await rtb.board.selection.selectWidgets(unknowJiras)
 
           /*
            let selectedWidgets = await rtb.board.selection.get()
