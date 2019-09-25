@@ -88,9 +88,11 @@ rtb.onReady(() => {
         positionPriority: 1,
         onClick: async () => {
          
-          var {jiras, cost, warn, unknowJiras, unknowCosts} = await getCost()
-
+          var all = await getCost()
+          console.log(all)
+          var {jiras, cost, warn, unknowJiras, unknowCosts} = all
           prompt('JIRA sélectionnées', jiras.join(', '))
+          
           await rtb.board.selection.selectWidgets(unknowJiras.concat(unknowCosts))
 
           /*
