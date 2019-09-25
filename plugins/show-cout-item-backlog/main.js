@@ -44,7 +44,7 @@ rtb.onReady(() => {
     if (unknowCosts.length>0 ) {
       warn += ', '+ unknowCosts.length + ' coût(s) inconnu(s)';
     }
-    return {jiras, cost, warn, unknowJiras, unknowCosts}
+    return {jiras, cost, warn, unknowJiras, unknowCosts, jiraIdByTitle, jiraCostById}
   }
 
   try {
@@ -90,7 +90,7 @@ rtb.onReady(() => {
          
           var all = await getCost()
           console.log(all)
-          var {jiras, cost, warn, unknowJiras, unknowCosts} = all
+          var {jiras, cost, warn, unknowJiras, unknowCosts, jiraIdByTitle, jiraCostById} = all
           prompt('JIRA sélectionnées', jiras.join(', '))
 
           var withoutCost = []
