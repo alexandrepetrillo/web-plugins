@@ -94,7 +94,9 @@ rtb.onReady(() => {
           prompt('JIRA sélectionnées', jiras.join(', '))
 
           var withoutCost = []
-          (await rtb.board.selection.get()).filter(w => w.type === "CARD").forEach(w => {
+          var sel = (await rtb.board.selection.get())
+          console.log(sel)
+          sel.filter(w => w.type === "CARD").forEach(w => {
             var jira = jiraIdByTitle[w.title]
             var cost = jiraCostById[jira]
             if (!cost) {
