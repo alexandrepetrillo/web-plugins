@@ -2,7 +2,12 @@
 rtb.onReady(() => {
 
   function getJiraId(w) {
+    try {
     return w.card.customFields.filter(f => f.value.match(/\w{3}-\d+/)).map(f => f.value)[0]
+    } catch (e) {
+      console.log('impossible de récuperer le jira ')
+      console.log(w)
+    }
   }
 
   async function getCost() {
