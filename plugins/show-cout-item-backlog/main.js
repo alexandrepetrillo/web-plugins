@@ -11,7 +11,7 @@ rtb.onReady(() => {
   }
 
   async function getCost() {
-    var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => getJiraId(w))
+    var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => getJiraId(w)).filter(j => j)
   
     var unknowCosts = [];
     var cost = jiras.map( jira => {
@@ -92,9 +92,11 @@ rtb.onReady(() => {
           console.log(sel)
           sel.filter(w => w.type === "CARD").forEach(w => {
             var jira = getJiraId(w)
-            var cost = jiraCostById[jira]
-            if (!cost) {
-              withoutCost.push(w.id)
+              if (jira) {
+              var cost = jiraCostById[jira]
+              if (!cost) {
+                withoutCost.push(w.id)
+              }
             }
           })
           
