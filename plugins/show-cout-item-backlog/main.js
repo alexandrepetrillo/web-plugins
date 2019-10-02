@@ -2,18 +2,8 @@
 rtb.onReady(() => {
 
   async function getCost() {
-    var unknowJiras = [];
-    var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => {
-      //var jira = widgetIdToJira[w.id]
-      var jira = jiraIdByTitle[w.title]
-      if (!jira) {
-        unknowJiras.push(w.id);
-      }
-      return jira
-    })
-    .filter(x => x);
-    
-    
+    var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => w.card.customFields[1].value)
+  
     var unknowCosts = [];
     var cost = jiras.map( jira => {
       if (jiraCostById[jira] == undefined || jiraCostById[jira] == '') {
@@ -38,19 +28,15 @@ rtb.onReady(() => {
    .reduce ((a,b)=>a+b, 0);
   
     var warn = '';
-    if (unknowJiras.length>0 ) {
-      warn += ', '+ unknowJiras.length + ' jira(s) inconnue(s)';
-    }
     if (unknowCosts.length>0 ) {
       warn += ', '+ unknowCosts.length + ' coût(s) inconnu(s)';
     }
-    return {jiras, cost, warn, unknowJiras, unknowCosts, jiraIdByTitle, jiraCostById}
+    return {jiras, cost, warn, unknowCosts, jiraCostById}
   }
 
   try {
   // chargement des cout jira
   var jiraCostById = {}
-  var jiraIdByTitle = {}
   var xmlhttp = new XMLHttpRequest()
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -59,7 +45,6 @@ rtb.onReady(() => {
       lines.forEach(line => {
         var elems = line.split("\t")
         jiraCostById[elems[0]] = elems[1]
-        jiraIdByTitle[elems[2]] = elems[0]
       })
       console.log(jiraCostById)
     } else {
@@ -76,7 +61,7 @@ rtb.onReady(() => {
     if(x.data.filter(w => w.type === "CARD").length === 0 ){
       return
     }
-    var {jiras, cost, warn, unknowJiras, unknowCosts} = await getCost()
+    var {jiras, cost, warn, unknowCosts} = await getCost()
     rtb.showNotification('Coût total ' + cost + warn)
   });
   
@@ -90,14 +75,14 @@ rtb.onReady(() => {
          
           var all = await getCost()
           console.log(all)
-          var {jiras, cost, warn, unknowJiras, unknowCosts, jiraIdByTitle, jiraCostById} = all
+          var {jiras, cost, warn, unknowCosts, jiraCostById} = all
           prompt('JIRA sélectionnées', jiras.join(', '))
 
           var withoutCost = []
           var sel = (await rtb.board.selection.get())
           console.log(sel)
           sel.filter(w => w.type === "CARD").forEach(w => {
-            var jira = jiraIdByTitle[w.title]
+            var jira = w.card.customFields[1].value
             var cost = jiraCostById[jira]
             if (!cost) {
               withoutCost.push(w.id)
