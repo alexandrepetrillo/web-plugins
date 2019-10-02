@@ -1,8 +1,12 @@
 
 rtb.onReady(() => {
 
+  function getJiraId(w) {
+    return w.card.customFields.filter(f => f.value.match(/\w{3}-\d+/)).map(f => f.value)[0]
+  }
+
   async function getCost() {
-    var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => w.card.customFields[1].value)
+    var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => getJiraId(w))
   
     var unknowCosts = [];
     var cost = jiras.map( jira => {
@@ -82,7 +86,7 @@ rtb.onReady(() => {
           var sel = (await rtb.board.selection.get())
           console.log(sel)
           sel.filter(w => w.type === "CARD").forEach(w => {
-            var jira = w.card.customFields[1].value
+            var jira = getJiraId(w)
             var cost = jiraCostById[jira]
             if (!cost) {
               withoutCost.push(w.id)
