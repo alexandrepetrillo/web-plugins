@@ -86,6 +86,7 @@ rtb.onReady(() => {
           console.log(all)
           var {jiras, cost, warn, unknowCosts, jiraCostById} = all
           prompt('JIRA sélectionnées', jiras.join(', '))
+          console.log(jiras.join(', '))
 
           var withoutCost = []
           var sel = (await rtb.board.selection.get())
