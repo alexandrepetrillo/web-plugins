@@ -19,8 +19,10 @@ rtb.onReady(() => {
   }
 
   async function getCost() {
+    var widgets = (await rtb.board.selection.get()).filter(w => w.type === "CARD")
+    var jiras = widgets.map(w => getJiraId(w))
     var unknowCosts = [];
-    var cost = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map( jira => {
+    var cost = widgets.map( jira => {
       var jiraCost = getJiraCost(jira)
       console.log(jiraCost)
       if (jiraCost == undefined || jiraCost == '') {
