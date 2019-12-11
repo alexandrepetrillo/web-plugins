@@ -52,23 +52,18 @@ rtb.onReady(() => {
     var withoutCost = []
     var sel = (await rtb.board.selection.get())
     sel.filter(w => w.type === "CARD").forEach(w => {
-      var jira = getJiraId(w)
-        if (jira) {
         var cost = getJiraCost(jira)
         if (!cost) {
           withoutCost.push(w.id)
         }
-      }
     })
     await rtb.board.selection.selectWidgets(withoutCost)
   }  
 
   async function selectDoublons() {
     var toSelect = []
-    
     var sel = (await rtb.board.selection.get())
     var allIds = []
-
     sel.filter(w => w.type === "CARD").forEach(w => {
       var jiraId = getJiraId(w)
       if (allIds.indexOf(jiraId) >= 0) {
