@@ -20,7 +20,7 @@ rtb.onReady(() => {
 
   async function getCost() {
     var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => getJiraId(w)).filter(j => j)
-  console.log(jiras)
+  console.log(await rtb.board.selection.get())
     var unknowCosts = [];
     var cost = jiras.map( jira => {
       var jiraCost = getJiraCost(jira)
