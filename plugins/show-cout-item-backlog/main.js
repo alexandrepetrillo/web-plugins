@@ -49,15 +49,15 @@ rtb.onReady(() => {
   });
   
   async function selectJiraWithoutCost() {
-    var withoutCost = []
+    var toSelect = []
     var sel = (await rtb.board.selection.get())
     sel.filter(w => w.type === "CARD").forEach(w => {
-        var cost = getJiraCost(jira)
+        var cost = getJiraCost(w)
         if (!cost) {
-          withoutCost.push(w.id)
+          toSelect.push(w.id)
         }
     })
-    await rtb.board.selection.selectWidgets(withoutCost)
+    await rtb.board.selection.selectWidgets(toSelect)
   }  
 
   async function selectDoublons() {
