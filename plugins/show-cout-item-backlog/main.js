@@ -51,20 +51,18 @@ rtb.onReady(() => {
   rtb.initialize({
     extensionPoints: {
       bottomBar: {
-        title: 'Sélectionner les ID JIRA',
+        title: 'Sélectionner les IDs des JIRAs sélectionnées',
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
          
           var all = await getCost()
-          console.log(all)
           var {jiras, cost, warn, unknowCosts} = all
           prompt('JIRA sélectionnées', jiras.join(', '))
           console.log(jiras.join(', '))
 
           var withoutCost = []
           var sel = (await rtb.board.selection.get())
-          console.log(sel)
           sel.filter(w => w.type === "CARD").forEach(w => {
             var jira = getJiraId(w)
               if (jira) {
@@ -80,4 +78,18 @@ rtb.onReady(() => {
       }
     }
   })
+
+  rtb.initialize({
+    extensionPoints: {
+      bottomBar: {
+        title: 'Les doublons !',
+        svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
+        positionPriority: 1,
+        onClick: async () => {
+          console.log("doublons")
+        }
+      }
+    }
+  })
+
 })
