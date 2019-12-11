@@ -20,14 +20,16 @@ rtb.onReady(() => {
 
   async function getCost() {
     var jiras = (await rtb.board.selection.get()).filter(w => w.type === "CARD").map(w => getJiraId(w)).filter(j => j)
-  
+  console.log(jiras)
     var unknowCosts = [];
     var cost = jiras.map( jira => {
-      if (getJiraCost(jira) == undefined || getJiraCost(jira) == '') {
+      var jiraCost = getJiraCost(jira)
+      console.log(jiraCost)
+      if (jiraCost == undefined || jiraCost == '') {
         unknowCosts.push(jira);
         return 0
       } else{
-        return parseFloat(getJiraCost(jira))
+        return parseFloat(jiraCost)
       }
     })
     .reduce ((a,b)=>a+b, 0);
