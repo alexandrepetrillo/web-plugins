@@ -91,7 +91,7 @@ rtb.onReady(() => {
          
           var all = await getCost()
           var {jiras, cost, warn, unknowCosts} = all
-          var choix = prompt('JIRA sélectionnées', jiras.join(', '))
+          var choix = prompt('JIRA sélectionnées. Tapez 1 pour sélectionner les jiras non estimés, 2 pour sélectionner les doublons', jiras.join(', '))
           console.log(jiras.join(', '))
 
           if (choix == 1) {
