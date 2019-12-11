@@ -24,7 +24,6 @@ rtb.onReady(() => {
     var unknowCosts = [];
     var cost = widgets.map( jira => {
       var jiraCost = getJiraCost(jira)
-      console.log(jiraCost)
       if (jiraCost == undefined || jiraCost == '') {
         unknowCosts.push(jira);
         return 0
