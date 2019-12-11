@@ -12,7 +12,7 @@ rtb.onReady(() => {
 
   function getJiraCost(w) {
     try {
-      return w.card.customFields.filter(f => f.tooltip == "[SIX] Coût item backlog").map(f => f.value)[0]
+      return w.card.customFields.filter(f => f.iconUrl == "[SIX] Coût item backlog").map(f => f.value)[0]
     } catch (e) {
       return ''
     }
