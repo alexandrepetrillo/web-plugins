@@ -72,7 +72,7 @@ rtb.onReady(() => {
       }
       allIds.push(jiraId)
     })
-    await rtb.board.selection.selectWidgets(withoutCost)
+    await rtb.board.selection.selectWidgets(toSelect)
 
   }
 
