@@ -48,11 +48,42 @@ rtb.onReady(() => {
     rtb.showNotification('Coût total ' + cost + warn)
   });
   
+  async function selectJiraWithoutCost() {
+    var withoutCost = []
+    var sel = (await rtb.board.selection.get())
+    sel.filter(w => w.type === "CARD").forEach(w => {
+      var jira = getJiraId(w)
+        if (jira) {
+        var cost = getJiraCost(jira)
+        if (!cost) {
+          withoutCost.push(w.id)
+        }
+      }
+    })
+    await rtb.board.selection.selectWidgets(withoutCost)
+  }  
+
+  async function selectDoublons() {
+    var toSelect = []
+    
+    var sel = (await rtb.board.selection.get())
+    var allIds = []
+
+    sel.filter(w => w.type === "CARD").forEach(w => {
+      var jiraId = getJiraId(w)
+      if (allIds.indexOf(jiraId) >= 0) {
+        // existe déjà
+        toSelect.push(w.id)
+      }
+      allIds.push(jiraId)
+    })
+    await rtb.board.selection.selectWidgets(withoutCost)
+
+  }
+
   rtb.initialize({
     extensionPoints: {
-      bottomBar: 
-      [
-        {
+      bottomBar: {
         title: 'Sélectionner les IDs des JIRAs sélectionnées',
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
@@ -60,36 +91,18 @@ rtb.onReady(() => {
          
           var all = await getCost()
           var {jiras, cost, warn, unknowCosts} = all
-          prompt('JIRA sélectionnées', jiras.join(', '))
+          var choix = prompt('JIRA sélectionnées', jiras.join(', '))
           console.log(jiras.join(', '))
 
-          var withoutCost = []
-          var sel = (await rtb.board.selection.get())
-          sel.filter(w => w.type === "CARD").forEach(w => {
-            var jira = getJiraId(w)
-              if (jira) {
-              var cost = getJiraCost(jira)
-              if (!cost) {
-                withoutCost.push(w.id)
-              }
-            }
-          })
-          
-          await rtb.board.selection.selectWidgets(withoutCost)
-        }
-      },
-      bottomBar: {
-        title: 'Les doublons !',
-        svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
-        positionPriority: 1,
-        onClick: async () => {
-          console.log("doublons")
+          if (choix == 1) {
+            await selectJiraWithoutCost()
+          } else if (choix == 2) {
+            await selectDoublons()
+          }
         }
       }
-    ]
     }
   })
-
 
 
 })
