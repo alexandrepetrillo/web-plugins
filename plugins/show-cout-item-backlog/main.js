@@ -61,19 +61,31 @@ rtb.onReady(() => {
   }  
 
   async function selectDoublons() {
-    var toSelect = []
-    var sel = (await rtb.board.selection.get())
-    var allIds = []
-    sel.filter(w => w.type === "CARD").forEach(w => {
-      var jiraId = getJiraId(w)
-      if (allIds.indexOf(jiraId) >= 0) {
-        // existe déjà
-        toSelect.push(w.id)
-      }
-      allIds.push(jiraId)
-    })
-    await rtb.board.selection.selectWidgets(toSelect)
-
+    var sel = (await rtb.board.selection.get()).filter(w => w.type === "CARD")
+    if (sel.length === 1) {
+      var selectedId = getJiraId(sel[0])
+      // recherche des doublons de la jira sélectionnée
+      var toSelect = []
+      (await rtb.board.widgets.get()).filter(w => w.type === "CARD").forEach(w => {
+        var jiraId = getJiraId(w)
+        if (getJiraId(w) == selectedId) {
+          toSelect.push(jiraId)
+        }
+      })
+      await rtb.board.selection.selectWidgets(toSelect)
+    } else {
+      var allWidgets = (await rtb.board.widgets.get()).filter(w => w.type === "CARD")
+      var allIds = allWidgets.map(w => getJiraId(w))
+      var toSelect = []
+      allWidgets.forEach(w => {
+        var jiraId = getJiraId(w)
+        if (allIds.indexOf(jiraId) >= 0) {
+          // existe déjà
+          toSelect.push(w.id)
+        }
+      })
+      await rtb.board.selection.selectWidgets(toSelect)
+    }
   }
 
   rtb.initialize({
@@ -84,8 +96,7 @@ rtb.onReady(() => {
         positionPriority: 1,
         onClick: async () => {
          
-          var all = await getCost()
-          var {jiras, cost, warn, unknowCosts} = all
+          var {jiras, cost, warn, unknowCosts} = await getCost()
           var choix = prompt('JIRA sélectionnées. Tapez 1 pour sélectionner les jiras non estimés, 2 pour sélectionner les doublons', jiras.join(', '))
           console.log('JIRA sélectionnées : ' + jiras.join(', '))
           if (choix == '1') {
