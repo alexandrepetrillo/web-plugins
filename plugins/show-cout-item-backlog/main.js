@@ -78,7 +78,8 @@ rtb.onReady(() => {
       var allWidgets = (await rtb.board.widgets.get()).filter(w => w.type === "CARD")
       var allIds = allWidgets.map(w => getJiraId(w))
       var toSelect = []
-      allWidgets.forEach(w => {
+      var ensembleAFiltrer = sel.length === 0 ? allWidgets : sel
+      ensembleAFiltrer.forEach(w => {
         var jiraId = getJiraId(w)
         if (allIds.filter(id => id === jiraId).length > 1) {
           // en doublons !
