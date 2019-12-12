@@ -79,8 +79,8 @@ rtb.onReady(() => {
       var toSelect = []
       allWidgets.forEach(w => {
         var jiraId = getJiraId(w)
-        if (allIds.indexOf(jiraId) >= 0) {
-          // existe déjà
+        if (allIds.filter(id => id === jiraId).length > 1) {
+          // en doublons !
           toSelect.push(w.id)
         }
       })
