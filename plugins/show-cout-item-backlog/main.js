@@ -66,10 +66,11 @@ rtb.onReady(() => {
       var selectedId = getJiraId(sel[0])
       // recherche des doublons de la jira sélectionnée
       var toSelect = []
-      (await rtb.board.widgets.get()).filter(w => w.type === "CARD").forEach(w => {
+      var allWidgets = (await rtb.board.widgets.get()).filter(w => w.type === "CARD")
+      allWidgets.forEach(w => {
         var jiraId = getJiraId(w)
         if (getJiraId(w) == selectedId) {
-          toSelect.push(jiraId)
+          toSelect.push(w.id)
         }
       })
       await rtb.board.selection.selectWidgets(toSelect)
