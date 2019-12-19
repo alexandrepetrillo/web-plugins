@@ -41,7 +41,7 @@ rtb.onReady(() => {
   }
 
   rtb.addListener('SELECTION_UPDATED', async (x) => {
-    if(x.data.filter(w => w.type === "CARD").length === 0 ){
+    if(x.data.filter(w => w.type === "CARD").length <= 1){
       return
     }
     var {jiras, cost, warn, unknowCosts} = await getCost()
