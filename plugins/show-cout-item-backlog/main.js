@@ -18,6 +18,14 @@ rtb.onReady(() => {
     }
   }
 
+  function getPrio(w) {
+    try {
+      return w.card.customFields.filter(f => f.tooltip == "[SIX] Priorité backlog").map(f => f.value)[0]
+    } catch (e) {
+      return ''
+    }
+  }
+
   async function getCost() {
     var widgets = (await rtb.board.selection.get()).filter(w => w.type === "CARD")
     var jiras = widgets.map(w => getJiraId(w))
@@ -90,6 +98,17 @@ rtb.onReady(() => {
     }
   }
 
+  async function selectP0() {
+    var sel = (await rtb.board.selection.get()).filter(w => w.type === "CARD")
+    if (sel.length === 0) 
+      sel = (await rtb.board.widgets.get())
+    
+    val toSelect = sel.filter(w => getPrio(w) === "P0")
+    toSelect.forEach(w => w.rotation = 10)
+    rtb.board.widgets.update(toSelect)
+    await rtb.board.selection.selectWidgets(toSelect)
+  }
+
   rtb.initialize({
     extensionPoints: {
       bottomBar: {
@@ -99,7 +118,7 @@ rtb.onReady(() => {
         onClick: async () => {
          
           var {jiras, cost, warn, unknowCosts} = await getCost()
-          var choix = prompt('JIRA sélectionnées. Tapez 1 pour sélectionner les jiras non estimés, 2 pour sélectionner les doublons', jiras.join(', '))
+          var choix = prompt('JIRA sélectionnées. Tapez 1 pour sélectionner les jiras non estimés, 2 pour sélectionner les doublons, 3 pour sélectionner les P0', jiras.join(', '))
           console.log('JIRA sélectionnées : ' + jiras.join(', '))
           if (choix == '1') {
             console.log("choix selectJiraWithoutCost")
@@ -107,6 +126,9 @@ rtb.onReady(() => {
           } else if (choix == '2') {
             console.log("choix selectDoublons")
             await selectDoublons()
+          } else if (choix == '3') {
+            console.log("choix P0")
+            await selectP0()
           } else {
             console.log("choix inconnu")
           }
