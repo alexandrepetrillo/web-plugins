@@ -104,7 +104,7 @@ rtb.onReady(() => {
       sel = (await rtb.board.widgets.get())
     
     var toSelect = sel.filter(w => getPrio(w) === "P0")
-    toSelect.forEach(w => w.scale = 1.5)
+    toSelect.forEach(w => w.rotation = 20)
     rtb.board.widgets.update(toSelect)
     await rtb.board.selection.selectWidgets(toSelect)
   }
