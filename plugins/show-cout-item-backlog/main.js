@@ -98,18 +98,19 @@ rtb.onReady(() => {
     }
   }
 
-  async function selectP0() {
+  async function selectP0(resetRotation) {
     var sel = (await rtb.board.selection.get()).filter(w => w.type === "CARD")
     if (sel.length === 0) 
       sel = (await rtb.board.widgets.get())
     
-    var toSelect = sel.filter(w => getPrio(w) === "P0" || w.rotation === 20)
-    toSelect.forEach(w => {
-      if (getPrio(w) === "P0") 
-        w.rotation = 20 
-      else 
-        w.rotation = 0
-    })
+    var toSelect
+    if (reset) {
+      toSelect = sel.filter(w => w.rotation === 20 )
+      toSelect.forEach(w => w.rotation = 0)
+    } else {
+      toSelect = sel.filter(w => w.getPrio(w) === "P0" )
+      toSelect.forEach(w => w.rotation = 20)
+    }
     rtb.board.widgets.update(toSelect)
     await rtb.board.selection.selectWidgets(toSelect)
   }
@@ -131,9 +132,9 @@ rtb.onReady(() => {
           } else if (choix == '2') {
             console.log("choix selectDoublons")
             await selectDoublons()
-          } else if (choix == '3') {
+          } else if (choix == '3' || choix == '3z') {
             console.log("choix P0")
-            await selectP0()
+            await selectP0(choix=='3z')
           } else {
             console.log("choix inconnu")
           }
