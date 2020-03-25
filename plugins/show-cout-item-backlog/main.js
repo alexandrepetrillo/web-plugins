@@ -103,7 +103,7 @@ rtb.onReady(() => {
     if (sel.length === 0) 
       sel = (await rtb.board.widgets.get())
     
-    val toSelect = sel.filter(w => getPrio(w) === "P0")
+    var toSelect = sel.filter(w => getPrio(w) === "P0")
     toSelect.forEach(w => w.rotation = 10)
     rtb.board.widgets.update(toSelect)
     await rtb.board.selection.selectWidgets(toSelect)
