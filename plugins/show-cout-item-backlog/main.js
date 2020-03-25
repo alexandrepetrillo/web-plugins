@@ -104,7 +104,7 @@ rtb.onReady(() => {
       sel = (await rtb.board.widgets.get())
     
     var toSelect
-    if (reset) {
+    if (resetRotation) {
       toSelect = sel.filter(w => w.rotation === 20 )
       toSelect.forEach(w => w.rotation = 0)
     } else {
