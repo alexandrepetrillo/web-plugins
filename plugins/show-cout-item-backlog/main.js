@@ -84,17 +84,33 @@ rtb.onReady(() => {
       await rtb.board.selection.selectWidgets(toSelect)
     } else {
       var allWidgets = (await rtb.board.widgets.get()).filter(w => w.type === "CARD")
-      var allIds = allWidgets.map(w => getJiraId(w))
-      var toSelect = []
-      var ensembleAFiltrer = sel.length === 0 ? allWidgets : sel
-      ensembleAFiltrer.forEach(w => {
+
+      var map = {}
+      allWidgets.forEach(w => {
         var jiraId = getJiraId(w)
-        if (allIds.filter(id => id === jiraId).length > 1) {
-          // en doublons !
-          toSelect.push(w.id)
-        }
+        var list = map[jiraId] || []
+        list.push(w.id)
+        map[jiraId] = list
       })
-      await rtb.board.selection.selectWidgets(toSelect)
+      Object.keys(map)
+          .filter(key => map[key].length<2)
+          .forEach(key => delete map[key])
+
+      await Object.keys(map).forEach(jiraId => {
+        var widgetIds = map[jiraId]
+        var firstId = widgetIds.shift()
+        widgetIds.forEach(async otherWidgetId => {
+          await miro.board.widgets.create({
+            type: 'line',
+            startWidgetId: firstId,
+            endWidgetId: otherWidgetId,
+            style: {
+              lineColor: "#f24726",
+              lineThickness: 8
+            }
+          })
+        })
+      })
     }
   }
 
@@ -124,7 +140,7 @@ rtb.onReady(() => {
         onClick: async () => {
          
           var {jiras, cost, warn, unknowCosts} = await getCost()
-          var choix = prompt('JIRA sélectionnées. Tapez 1 pour sélectionner les jiras non estimés, 2 pour sélectionner les doublons, 3 pour sélectionner les P0', jiras.join(', '))
+          var choix = prompt('JIRA sélectionnées. Tapez 1 pour sélectionner les jiras non estimés, 2 pour identifier les doublons, 3 pour sélectionner les P0', jiras.join(', '))
           console.log('JIRA sélectionnées : ' + jiras.join(', '))
           if (choix == '1') {
             console.log("choix selectJiraWithoutCost")
