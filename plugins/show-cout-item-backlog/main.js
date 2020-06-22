@@ -69,37 +69,29 @@ rtb.onReady(() => {
   }  
 
   async function selectDoublons() {
-    var sel = (await rtb.board.selection.get()).filter(w => w.type === "CARD")
-    if (sel.length === 1) {
-      var selectedId = getJiraId(sel[0])
-      // recherche des doublons de la jira sélectionnée
-      var toSelect = []
-      var allWidgets = (await rtb.board.widgets.get()).filter(w => w.type === "CARD")
-      allWidgets.forEach(w => {
-        var jiraId = getJiraId(w)
-        if (getJiraId(w) == selectedId) {
-          toSelect.push(w.id)
-        }
-      })
-      await rtb.board.selection.selectWidgets(toSelect)
-    } else {
-      var allWidgets = (await rtb.board.widgets.get()).filter(w => w.type === "CARD")
+    var allWidgets = (await rtb.board.widgets.get()).filter(w => w.type === "CARD")
+    var allLines = (await rtb.board.widgets.get()).filter(w => w.type === "LINE")
 
-      var map = {}
-      allWidgets.forEach(w => {
-        var jiraId = getJiraId(w)
-        var list = map[jiraId] || []
-        list.push(w.id)
-        map[jiraId] = list
-      })
-      Object.keys(map)
-          .filter(key => map[key].length<2)
-          .forEach(key => delete map[key])
+    var map = {}
+    allWidgets.forEach(w => {
+      var jiraId = getJiraId(w)
+      var list = map[jiraId] || []
+      list.push(w.id)
+      map[jiraId] = list
+    })
+    Object.keys(map)
+        .filter(key => map[key].length<2)
+        .forEach(key => delete map[key])
 
-      await Object.keys(map).forEach(jiraId => {
-        var widgetIds = map[jiraId]
-        var firstId = widgetIds.shift()
-        widgetIds.forEach(async otherWidgetId => {
+    await Object.keys(map).forEach(jiraId => {
+      var widgetIds = map[jiraId]
+      var firstId = widgetIds.shift()
+      widgetIds.forEach(async otherWidgetId => {
+        var lineAlreadyExists = allLines.find(w =>
+            (w.startWidgetId === firstId && w.endWidgetId === otherWidgetId)
+            || (w.startWidgetId === otherWidgetId && w.endWidgetId === firstId)
+        )
+        if (lineAlreadyExists == null) {
           await miro.board.widgets.create({
             type: 'line',
             startWidgetId: firstId,
@@ -109,9 +101,9 @@ rtb.onReady(() => {
               lineThickness: 8
             }
           })
-        })
+        }
       })
-    }
+    })
   }
 
   async function selectP0(resetRotation) {
