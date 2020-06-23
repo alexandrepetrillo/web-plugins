@@ -40,7 +40,7 @@ rtb.onReady(() => {
       }
     })
     .reduce ((a,b)=>a+b, 0);
-    
+
     var warn = '';
     if (unknowCosts.length>0 ) {
       warn += ', '+ unknowCosts.length + ' coût(s) inconnu(s)';
@@ -55,7 +55,7 @@ rtb.onReady(() => {
     var {jiras, cost, warn, unknowCosts} = await getCost()
     rtb.showNotification('Coût total ' + cost + warn)
   });
-  
+
   async function selectJiraWithoutCost() {
     var toSelect = []
     var sel = (await rtb.board.selection.get())
@@ -66,7 +66,7 @@ rtb.onReady(() => {
         }
     })
     await rtb.board.selection.selectWidgets(toSelect)
-  }  
+  }
 
   async function selectDoublons() {
     var allWidgets = (await rtb.board.widgets.get()).filter(w => w.type === "CARD")
@@ -91,26 +91,26 @@ rtb.onReady(() => {
             (w.startWidgetId === firstId && w.endWidgetId === otherWidgetId)
             || (w.startWidgetId === otherWidgetId && w.endWidgetId === firstId)
         )
-        if (lineAlreadyExists == null) {
-          await miro.board.widgets.create({
-            type: 'line',
-            startWidgetId: firstId,
-            endWidgetId: otherWidgetId,
-            style: {
-              lineColor: "#f24726",
-              lineThickness: 8
-            }
-          })
-        }
+      //   if (lineAlreadyExists == null) {
+      //     await miro.board.widgets.create({
+      //       type: 'line',
+      //       startWidgetId: firstId,
+      //       endWidgetId: otherWidgetId,
+      //       style: {
+      //         lineColor: "#f24726",
+      //         lineThickness: 8
+      //       }
+      //     })
+      //   }
       })
     })
   }
 
   async function selectP0(resetRotation) {
     var sel = (await rtb.board.selection.get()).filter(w => w.type === "CARD")
-    if (sel.length === 0) 
+    if (sel.length === 0)
       sel = (await rtb.board.widgets.get())
-    
+
     var toSelect
     if (resetRotation) {
       toSelect = sel.filter(w => w.rotation === 20 )
@@ -130,7 +130,7 @@ rtb.onReady(() => {
         svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
         positionPriority: 1,
         onClick: async () => {
-         
+
           var {jiras, cost, warn, unknowCosts} = await getCost()
           var choix = prompt('JIRA sélectionnées. Tapez 1 pour sélectionner les jiras non estimés, 2 pour identifier les doublons, 3 pour sélectionner les P0', jiras.join(', '))
           console.log('JIRA sélectionnées : ' + jiras.join(', '))
