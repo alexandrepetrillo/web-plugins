@@ -91,17 +91,17 @@ rtb.onReady(() => {
             (w.startWidgetId === firstId && w.endWidgetId === otherWidgetId)
             || (w.startWidgetId === otherWidgetId && w.endWidgetId === firstId)
         )
-      //   if (lineAlreadyExists == null) {
-      //     await miro.board.widgets.create({
-      //       type: 'line',
-      //       startWidgetId: firstId,
-      //       endWidgetId: otherWidgetId,
-      //       style: {
-      //         lineColor: "#f24726",
-      //         lineThickness: 8
-      //       }
-      //     })
-      //   }
+         if (lineAlreadyExists == null) {
+           await miro.board.widgets.create({
+             type: 'line',
+             startWidgetId: firstId,
+             endWidgetId: otherWidgetId,
+             style: {
+               lineColor: "#f24726",
+               lineThickness: 8
+             }
+           })
+         }
       })
     })
   }
