@@ -15,7 +15,7 @@ miro.onReady(() => {
       return w.card.customFields.filter(f => f.tooltip == "[SIX] Coût item backlog").map(f => f.value)[0]
     } catch (e) {
       try {
-        return w.card.customFields.map(f => parseFloat(f.value)).filter(f=>!isNaN(f))[0]
+        return w.card.customFields.filter(f => !isNaN(parseFloat(f.value)))[0]
       } catch (e) {
         return ''
       }
