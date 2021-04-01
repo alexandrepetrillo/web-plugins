@@ -1,5 +1,5 @@
 
-rtb.onReady(() => {
+miro.onReady(() => {
 
   function getJiraId(w) {
     try {
@@ -27,7 +27,7 @@ rtb.onReady(() => {
   }
 
   async function getCost() {
-    var widgets = (await rtb.board.selection.get()).filter(w => w.type === "CARD")
+    var widgets = (await miro.board.selection.get()).filter(w => w.type === "CARD")
     var jiras = widgets.map(w => getJiraId(w))
     var unknowCosts = [];
     var cost = widgets.map( jira => {
@@ -48,29 +48,29 @@ rtb.onReady(() => {
     return {jiras, cost, warn, unknowCosts}
   }
 
-  rtb.addListener('SELECTION_UPDATED', async (x) => {
+  miro.addListener('SELECTION_UPDATED', async (x) => {
     if(x.data.filter(w => w.type === "CARD").length <= 1){
       return
     }
     var {jiras, cost, warn, unknowCosts} = await getCost()
-    rtb.showNotification('Coût total ' + cost + warn)
+    miro.showNotification('Coût total ' + cost + warn)
   });
 
   async function selectJiraWithoutCost() {
     var toSelect = []
-    var sel = (await rtb.board.selection.get())
+    var sel = (await miro.board.selection.get())
     sel.filter(w => w.type === "CARD").forEach(w => {
         var cost = getJiraCost(w)
         if (!cost) {
           toSelect.push(w.id)
         }
     })
-    await rtb.board.selection.selectWidgets(toSelect)
+    await miro.board.selection.selectWidgets(toSelect)
   }
 
   async function selectDoublons() {
-    var allWidgets = (await rtb.board.widgets.get()).filter(w => w.type === "CARD")
-    var allLines = (await rtb.board.widgets.get()).filter(w => w.type === "LINE")
+    var allWidgets = (await miro.board.widgets.get()).filter(w => w.type === "CARD")
+    var allLines = (await miro.board.widgets.get()).filter(w => w.type === "LINE")
 
     var map = {}
     allWidgets.forEach(w => {
@@ -107,9 +107,9 @@ rtb.onReady(() => {
   }
 
   async function selectP0(resetRotation) {
-    var sel = (await rtb.board.selection.get()).filter(w => w.type === "CARD")
+    var sel = (await miro.board.selection.get()).filter(w => w.type === "CARD")
     if (sel.length === 0)
-      sel = (await rtb.board.widgets.get())
+      sel = (await miro.board.widgets.get())
 
     var toSelect
     if (resetRotation) {
@@ -119,11 +119,11 @@ rtb.onReady(() => {
       toSelect = sel.filter(w => w.getPrio(w) === "P0" )
       toSelect.forEach(w => w.rotation = 20)
     }
-    rtb.board.widgets.update(toSelect)
-    await rtb.board.selection.selectWidgets(toSelect)
+    miro.board.widgets.update(toSelect)
+    await miro.board.selection.selectWidgets(toSelect)
   }
 
-  rtb.initialize({
+  miro.initialize({
     extensionPoints: {
       bottomBar: {
         title: 'Sélectionner les IDs des JIRAs sélectionnées',
