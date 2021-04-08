@@ -13,6 +13,7 @@ miro.onReady(() => {
   function getJiraCost(w) {
     try {
       return w.card.customFields.filter(f => f.tooltip == "[SIX] Coût item backlog").map(f => f.value)[0]
+          || w.card.customFields.filter(f => !isNaN(parseFloat(f.value)))[0];
     } catch (e) {
       try {
         return w.card.customFields.filter(f => !isNaN(parseFloat(f.value)))[0]
