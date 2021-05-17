@@ -215,7 +215,7 @@ async function selectUnstorageCards() {
                 let shapeFields = s.plainText.split(' / ');
                 for (let shapefield of shapeFields) {
                     console.log(shapefield);
-                    if (jalonMetiers.indexOf(shapeFields) !== -1 || jalonDemonstrateurs.indexOf(shapeFields) !== -1) {
+                    if (jalonMetiers.indexOf(shapefield) !== -1 || jalonDemonstrateurs.indexOf(shapefield) !== -1) {
                         if (cardFields.indexOf(shapefield) === -1) {
                             console.log(`${c.id} not match in ${shapefield}`);
                             await miro.board.widgets.bringForward(c.id);
