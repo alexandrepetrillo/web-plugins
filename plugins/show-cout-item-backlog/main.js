@@ -129,6 +129,15 @@ miro.onReady(() => {
 
     miro.initialize({
         extensionPoints: {
+            getWidgetMenuItems: widgets => {
+                return {
+                    tooltip: "coucou",
+                    svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
+                    onClick: widgets => {
+                        console.log(widgets);
+                    }
+                }
+            },
             bottomBar: {
                 title: 'Sélectionner les IDs des JIRAs sélectionnées',
                 svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
@@ -236,3 +245,17 @@ async function selectUnstorageCards() {
 
 
 
+
+
+
+miro.initialize({
+    extensionPoints: {
+        getWidgetMenuItems: widgets => {
+            return {
+                tooltip: "coucou",
+                svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
+                onClick: widgets => {
+                    console.log(widgets);
+                }
+            }
+        }}});
