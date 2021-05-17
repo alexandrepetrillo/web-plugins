@@ -137,9 +137,9 @@ miro.onReady(() => {
 
                     var {jiras, cost, warn, unknowCosts} = await getCost()
                     var choix = prompt('JIRA sélectionnées. ' +
-                        'Tapez 1 pour sélectionner les jiras non estimés, ' +
-                        '2 pour identifier les doublons, ' +
-                        '3 pour sélectionner les P0' +
+                        'Tapez 1 pour sélectionner les jiras non estimés ,  ' +
+                        '2 pour identifier les doublons , ' +
+                        '3 pour sélectionner les P0 , ' +
                         '4 pour sélectionner les JIRA mal rangées', jiras.join(', '))
                     console.log('JIRA sélectionnées : ' + jiras.join(', '))
                     if (choix == '1') {
@@ -182,10 +182,21 @@ async function selectUnstorageCards() {
         'IHMPrepa02 - Généralisation',
     ];
     let jalonDemonstrateurs = [
+        'T1-2019',
+        'T2-2019',
+        'T3-2019',
+        'T4-2019',
+
+        'T1-2020',
+        'T2-2020',
+        'T3-2020',
+        'T4-2020',
+
         'T1-2021',
         'T2-2021',
         'T3-2021',
         'T4-2021',
+
         'T1-2022',
         'T2-2022',
         'T3-2022',
@@ -203,6 +214,7 @@ async function selectUnstorageCards() {
                 let cardFields = c.card.customFields.map(cf => cf.value).filter(v => v != null);
                 let shapeFields = s.plainText.split(' / ');
                 for (let shapefield of shapeFields) {
+                    console.log(shapefield);
                     if (jalonMetiers.indexOf(shapeFields) !== -1 || jalonDemonstrateurs.indexOf(shapeFields) !== -1) {
                         if (cardFields.indexOf(shapefield) === -1) {
                             console.log(`${c.id} not match in ${shapefield}`);
