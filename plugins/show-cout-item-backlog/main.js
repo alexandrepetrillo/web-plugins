@@ -151,7 +151,7 @@ miro.onReady(() => {
                     } else if (choix == '3' || choix == '3z') {
                         console.log("choix P0")
                         await selectP0(choix == '3z')
-                   } else if (choix == '4' || choix == '3z') {
+                    } else if (choix == '4' || choix == '3z') {
                         await selectUnstorageCards()
                     } else {
                         console.log("choix inconnu")
@@ -186,6 +186,10 @@ async function selectUnstorageCards() {
         'T2-2021',
         'T3-2021',
         'T4-2021',
+        'T1-2022',
+        'T2-2022',
+        'T3-2022',
+        'T4-2022',
     ];
     let shapes = await miro.board.widgets.get({type: 'SHAPE'});
     let cards = await miro.board.widgets.get({type: 'CARD'});
@@ -199,10 +203,12 @@ async function selectUnstorageCards() {
                 let cardFields = c.card.customFields.map(cf => cf.value).filter(v => v != null);
                 let shapeFields = s.plainText.split(' / ');
                 for (let shapefield of shapeFields) {
-                    if (cardFields.indexOf(shapefield) === -1) {
-                        console.log(`${c.id} not match in ${shapefield}`);
-                        await miro.board.widgets.bringForward(c.id);
-                        errors.push(c.id);
+                    if (jalonMetiers.indexOf(shapeFields) !== -1 || jalonDemonstrateurs.indexOf(shapeFields) !== -1) {
+                        if (cardFields.indexOf(shapefield) === -1) {
+                            console.log(`${c.id} not match in ${shapefield}`);
+                            await miro.board.widgets.bringForward(c.id);
+                            errors.push(c.id);
+                        }
                     }
                 }
             }
