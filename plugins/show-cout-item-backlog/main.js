@@ -12,7 +12,7 @@ miro.onReady(() => {
     function getJiraCost(w) {
         try {
             return w.card.customFields.filter(f => f.tooltip == "[SIX] Coût item backlog").map(f => f.value)[0]
-                || w.card.customFields.filter(f => !isNaN(parseFloat(f.value)))[0].value;
+                || w.card.customFields.filter(f => f.value.match(/^[0-9\.]*$/) && !isNaN(parseFloat(f.value)))[0].value;
         } catch (e) {
             try {
                 return w.card.customFields.filter(f => !isNaN(parseFloat(f.value)))[0].value
@@ -131,7 +131,7 @@ miro.onReady(() => {
         extensionPoints: {
             getWidgetMenuItems: widgets => {
                 return {
-                    tooltip: "coucou",
+                    tooltip: "Vérifier le contenu de la forme",
                     svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
                     onClick: widgets => {
                         console.log(widgets);
@@ -238,24 +238,3 @@ async function selectUnstorageCards() {
     await miro.board.widgets.bringForward(errors)
     await miro.board.selection.selectWidgets(errors)
 }
-
-
-
-
-
-
-
-
-
-
-miro.initialize({
-    extensionPoints: {
-        getWidgetMenuItems: widgets => {
-            return {
-                tooltip: "coucou",
-                svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
-                onClick: widgets => {
-                    console.log(widgets);
-                }
-            }
-        }}});
