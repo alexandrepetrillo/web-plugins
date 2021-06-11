@@ -32,7 +32,7 @@ miro.onReady(() => {
 
     async function getCost() {
         var widgets = (await miro.board.selection.get()).filter(w => w.type === "CARD")
-        var jiras = widgets.map(w => getJiraId(w))
+        var jiras = widgets.map(w => getJiraId(w)).filter(id => (id != null && id !='' && id != ' '))
         var unknowCosts = [];
         var cost = widgets.map(jira => {
             var jiraCost = getJiraCost(jira)
