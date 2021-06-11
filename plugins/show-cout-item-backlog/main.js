@@ -2,7 +2,7 @@ miro.onReady(() => {
 
     function getJiraId(w) {
         try {
-            return w.card.customFields.filter(f => f.tooltip == "Issue type").map(f => f.value)[0]
+            return w.card.customFields.filter(f => f.tooltip.indexOf("Issue type")!=-1).map(f => f.value)[0]
         } catch (e) {
             console.log('impossible de récuperer le jira ')
             console.log(w)
