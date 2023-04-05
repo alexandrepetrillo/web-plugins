@@ -1,4 +1,3 @@
-console.log('Plugin show count item loading...');
 miro.onReady(() => {
 
     function getJiraId(w) {
@@ -55,30 +54,36 @@ miro.onReady(() => {
 
     miro.addListener('SELECTION_UPDATED', async (x) => {
         if (x.data.filter(w => w.type === "CARD").length <= 1) {
-			if (x.data.length === 1) {
-				console.log('test')
-				var shape = x.data[0]
-				var widgetsOverlays = (await miro.board.widgets.get())
-					.filter(w => w.type === "CARD")
-					.filter(w => {
-						var pointLT = {x: shape.bounds.left, y: shape.bounds.top}
-						var pointLB = {x: shape.bounds.left, y: shape.bounds.bottom}
-						var pointRT = {x: shape.bounds.right, y: shape.bounds.top}
-						var pointRB = {x: shape.bounds.right, y: shape.bounds.bottom}
-						
-						return pointIncluded(pointLT, shape.bounds) 
-									||  pointIncluded(pointLB, shape.bounds) 
-									||  pointIncluded(pointRT, shape.bounds) 
-									||  pointIncluded(pointRB, shape.bounds) 
-					})
-				if (widgetsOverlays.length === 1) {
-					console.log(widgetsOverlays)
-				}
-			}			
+			return		
         } else {
 			var {jiras, cost, warn, unknowCosts} = await getCost()
 			miro.showNotification('Coût total ' + cost + warn)
 		}
+    });
+	
+	
+    miro.addListener('WIDGETS_TRANSFORMATION_UPDATED', async (x) => {
+		console.log(x);
+		if (x.data.length === 1 && x.data[0].type !== 'CARD') {
+			console.log('test')
+			var shape = x.data[0]
+			var widgetsOverlays = (await miro.board.widgets.get())
+				.filter(w => w.type === "CARD")
+				.filter(w => {
+					var pointLT = {x: shape.bounds.left, y: shape.bounds.top}
+					var pointLB = {x: shape.bounds.left, y: shape.bounds.bottom}
+					var pointRT = {x: shape.bounds.right, y: shape.bounds.top}
+					var pointRB = {x: shape.bounds.right, y: shape.bounds.bottom}
+					
+					return pointIncluded(pointLT, shape.bounds) 
+								||  pointIncluded(pointLB, shape.bounds) 
+								||  pointIncluded(pointRT, shape.bounds) 
+								||  pointIncluded(pointRB, shape.bounds) 
+				})
+			if (widgetsOverlays.length === 1) {
+				console.log(widgetsOverlays)
+			}
+		}			
     });
 	
 	function pointIncluded(point, bounds) {
