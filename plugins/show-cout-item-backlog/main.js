@@ -1,3 +1,4 @@
+console.log('Plugin show count item loading...');
 miro.onReady(() => {
 
     function getJiraId(w) {
