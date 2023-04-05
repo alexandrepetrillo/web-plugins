@@ -81,6 +81,8 @@ miro.onReady(() => {
 				})
 			if (widgetsOverlays.length === 1) {
 				console.log(widgetsOverlays)
+				var existing = (widgetsOverlays[0].metadata['link'] || [])
+				widgetsOverlays[0].metadata['link']= [...existing, shape.id]
 			}
 		}			
     });
