@@ -66,7 +66,7 @@ miro.onReady(() => {
 		console.log(x);
 		if (x.data.length === 1 && x.data[0].type !== 'CARD') {
 			console.log('test')
-			var shape = x.data[0]
+			var shape = await miro.board.widgets.get({id: x.data[0].id})
 			var widgetsOverlays = (await miro.board.widgets.get())
 				.filter(w => w.type === "CARD")
 				.filter(w => {
