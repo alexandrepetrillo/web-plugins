@@ -67,18 +67,17 @@ miro.onReady(() => {
 		if (x.data.length === 1 && x.data[0].type !== 'CARD') {
 			console.log('test')
 			var shape = (await miro.board.widgets.get({id: x.data[0].id}))[0]
-			var widgetsOverlays = (await miro.board.widgets.get())
-				.filter(w => w.type === "CARD")
+			var widgetsOverlays = (await miro.board.widgets.get({type: 'CARD'}))
 				.filter(w => {
 					var pointLT = {x: shape.bounds.left, y: shape.bounds.top}
 					var pointLB = {x: shape.bounds.left, y: shape.bounds.bottom}
 					var pointRT = {x: shape.bounds.right, y: shape.bounds.top}
 					var pointRB = {x: shape.bounds.right, y: shape.bounds.bottom}
 					
-					return pointIncluded(pointLT, shape.bounds) 
-								||  pointIncluded(pointLB, shape.bounds) 
-								||  pointIncluded(pointRT, shape.bounds) 
-								||  pointIncluded(pointRB, shape.bounds) 
+					return pointIncluded(pointLT, w.bounds) 
+								||  pointIncluded(pointLB, w.bounds) 
+								||  pointIncluded(pointRT, w.bounds) 
+								||  pointIncluded(pointRB, w.bounds) 
 				})
 			if (widgetsOverlays.length === 1) {
 				console.log(widgetsOverlays)
