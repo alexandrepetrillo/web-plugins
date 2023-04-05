@@ -90,7 +90,7 @@ miro.onReady(() => {
 		return point.x >= bounds.left 
 				&& point.x <= bounds.right
 				&& point.y >= bounds.top 
-				&& point.y <= bounds.bottom)
+				&& point.y <= bounds.bottom
 	}
 
     async function selectJiraWithoutCost() {
