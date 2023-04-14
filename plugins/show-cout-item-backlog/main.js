@@ -61,7 +61,7 @@ miro.onReady(() => {
 		}
     });
 	
-	
+	/*
     miro.addListener('WIDGETS_TRANSFORMATION_UPDATED', async (x) => {
 		console.log(x);
 		if (x.data.length === 1 && x.data[0].type !== 'CARD') {
@@ -92,6 +92,7 @@ miro.onReady(() => {
 			}
 		}			
     });
+	*/
 	
 	function pointIncluded(point, bounds) {
 		return point.x >= bounds.left 
