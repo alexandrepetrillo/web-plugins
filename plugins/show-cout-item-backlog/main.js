@@ -79,6 +79,7 @@ miro.onReady(() => {
 								||  pointIncluded(pointRT, w.bounds) 
 								||  pointIncluded(pointRB, w.bounds) 
 				})
+			console.log(widgetsOverlays)
 			if (widgetsOverlays.length === 1) {
 				console.log(widgetsOverlays)
 				var existing = (widgetsOverlays[0].metadata['link'] || [])
