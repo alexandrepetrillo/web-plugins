@@ -86,7 +86,7 @@ miro.onReady(() => {
 				//widgetsOverlays[0].metadata['link']= existing		
 				//shape.metadata['link'] = [widgetsOverlays[0].id]
 				await (miro.board.widgets.update([ 
-						{id: widgetsOverlays[0].id, 'metadata.link': existing]},
+						{id: widgetsOverlays[0].id, 'metadata.link': existing},
 						{id: shape.id, 'metadata.link': [widgetsOverlays[0].id]}
 					]))
 			}
