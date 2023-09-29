@@ -280,7 +280,7 @@ async function selectUnstorageCards() {
     await miro.board.selection.selectWidgets(errors)
 }
 
-
+/*
 
 miro.onReady(() => {
   miro.addListener('SELECTION_UPDATED', async (event) => {
@@ -300,4 +300,4 @@ miro.onReady(() => {
       }
     }
   });
-});
+});*/
