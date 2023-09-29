@@ -279,3 +279,25 @@ async function selectUnstorageCards() {
     await miro.board.widgets.bringForward(errors)
     await miro.board.selection.selectWidgets(errors)
 }
+
+
+
+miro.onReady(() => {
+  miro.addListener('SELECTION_UPDATED', async (event) => {
+    if (event.data.length > 0) {
+      const btn = miro.board.ui.createButton({
+        extensionPoint: 'BOTTOM_BAR',
+        label: 'Mon Bouton',
+        onClick: async () => {
+          console.log('click')
+        }
+      });
+      await btn.show();
+    } else {
+      const btn = await miro.board.ui.getButtons();
+      if (btn.length > 0) {
+        await btn[0].hide();
+      }
+    }
+  });
+});
