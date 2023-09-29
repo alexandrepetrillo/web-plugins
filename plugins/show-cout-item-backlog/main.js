@@ -177,7 +177,7 @@ miro.onReady(() => {
                 librarySvgIcon: '<path fill="currentColor" fill-rule="nonzero" d="M13.162 12.5l2.238 2.218L14.138 16 11.9 13.782 9.662 16 8.4 14.718l2.238-2.218L8.4 10.282 9.662 9l2.238 2.218L14.138 9l1.262 1.282-2.238 2.218zM7 12.5C7 14.444 5.424 16 3.5 16A3.498 3.498 0 0 1 0 12.5C0 10.556 1.576 9 3.5 9S7 10.556 7 12.5zM24 16h-7V9h7v7z"/>',
                 onClick: async () => {
                     (await miro.board.selection.get()).map(w => w.card.customFields.filter(f => f.tooltip == "[SIX] GOJIRA KEY").map(f => f.value)[0])
-                        .forEach(key => {
+                        .forEach(key => { 
                             window.open("https://gojira.enedis.fr/browse/" + key, key);
                         })
                 }
