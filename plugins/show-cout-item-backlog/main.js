@@ -170,14 +170,14 @@ miro.onReady(() => {
 
     miro.initialize({
         extensionPoints: {
-            getWidgetMenuItems: widgets => {
-                return {
-                    tooltip: "Vérifier le contenu de la forme",
+            getWidgetMenuItems: () => {
+                return Promise.resolve({
+                    tooltip: "Perception-Map-Demo",
                     svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
-                    onClick: widgets => {
-                        console.log(widgets);
+                    onClick: async (widgets) => {
+                        console.log('gogogo')
                     }
-                }
+                })
             },
             bottomBar: {
                 title: 'Sélectionner les IDs des JIRAs sélectionnées',
@@ -301,3 +301,4 @@ miro.onReady(() => {
     }
   });
 });*/
+
