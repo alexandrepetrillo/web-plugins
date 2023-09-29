@@ -181,6 +181,13 @@ miro.onReady(() => {
                     console.log(widgets)
                 }
             },
+            toolbar: {
+                title: 'Sélectionner les IDs des JIRAs sélectionnées',
+                svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
+                onClick: async (widgets) => {
+                    console.log(widgets)
+                }
+            },
             bottomBar: {
                 title: 'Sélectionner les IDs des JIRAs sélectionnées',
                 svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
