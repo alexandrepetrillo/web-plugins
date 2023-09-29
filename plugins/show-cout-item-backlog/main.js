@@ -168,16 +168,11 @@ miro.onReady(() => {
         await miro.board.selection.selectWidgets(toSelect)
     }
 
+    console.log("initialize...")
     miro.initialize({
         extensionPoints: {
-            getWidgetMenuItems: () => {
-                return Promise.resolve({
-                    tooltip: "Perception-Map-Demo",
-                    svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
-                    onClick: async (widgets) => {
-                        console.log('gogogo')
-                    }
-                })
+            getWidgetMenuItems: (widgets) => {
+                console.log(widgets)
             },
             bottomBar: {
                 title: 'Sélectionner les IDs des JIRAs sélectionnées',
