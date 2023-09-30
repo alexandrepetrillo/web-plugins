@@ -210,7 +210,17 @@ miro.onReady(() => {
             },
             bottomBar: {
                 title: 'Sélectionner les IDs des JIRAs sélectionnées',
-                svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
+                svgIcon: '<svg version="1.0" xmlns="http://www.w3.org/2000/svg"\n' +
+                    ' width="16.000000pt" height="16.000000pt" viewBox="0 0 16.000000 16.000000"\n' +
+                    ' preserveAspectRatio="xMidYMid meet">\n' +
+                    '\n' +
+                    '<g transform="translate(0.000000,16.000000) scale(0.100000,-0.100000)"\n' +
+                    'fill="#000000" stroke="none">\n' +
+                    '<path d="M40 115 l-34 -35 37 -38 37 -37 37 37 37 38 -34 35 c-19 19 -37 35\n' +
+                    '-40 35 -3 0 -21 -16 -40 -35z m56 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33\n' +
+                    '11 33 5 0 12 -5 16 -11z"/>\n' +
+                    '</g>\n' +
+                    '</svg>',
                 positionPriority: 1,
                 onClick: async () => {
 
