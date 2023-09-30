@@ -173,8 +173,34 @@ miro.onReady(() => {
         extensionPoints: {
             toolbar: {
                 title: 'GOJIRA',
-                toolbarSvgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
-                librarySvgIcon: '<path fill="currentColor" fill-rule="nonzero" d="M13.162 12.5l2.238 2.218L14.138 16 11.9 13.782 9.662 16 8.4 14.718l2.238-2.218L8.4 10.282 9.662 9l2.238 2.218L14.138 9l1.262 1.282-2.238 2.218zM7 12.5C7 14.444 5.424 16 3.5 16A3.498 3.498 0 0 1 0 12.5C0 10.556 1.576 9 3.5 9S7 10.556 7 12.5zM24 16h-7V9h7v7z"/>',
+                toolbarSvgIcon: '<svg version="1.0" xmlns="http://www.w3.org/2000/svg"\n' +
+                    ' width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000"\n' +
+                    ' preserveAspectRatio="xMidYMid meet">\n' +
+                    '\n' +
+                    '<g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"\n' +
+                    'fill="#000000" stroke="none">\n' +
+                    '<path d="M7 314 c-4 -4 -7 -36 -7 -71 l0 -63 106 0 105 0 -3 28 c-3 24 -7 27\n' +
+                    '-46 30 -37 3 -44 0 -49 -17 -7 -27 -53 -30 -53 -3 0 43 24 57 100 57 81 0 100\n' +
+                    '-13 100 -70 0 -51 -18 -66 -88 -72 -51 -5 -62 -9 -60 -22 3 -13 21 -16 106\n' +
+                    '-19 l103 -3 -3 113 -3 113 -151 3 c-82 1 -153 -1 -157 -4z"/>\n' +
+                    '<path d="M2 68 l3 -63 155 0 c139 0 155 2 158 17 3 16 -6 18 -83 18 -105 0\n' +
+                    '-151 17 -166 60 -9 24 -17 30 -40 30 l-30 0 3 -62z"/>\n' +
+                    '</g>\n' +
+                    '</svg>',
+                librarySvgIcon: '<svg version="1.0" xmlns="http://www.w3.org/2000/svg"\n' +
+                    ' width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000"\n' +
+                    ' preserveAspectRatio="xMidYMid meet">\n' +
+                    '\n' +
+                    '<g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"\n' +
+                    'fill="#000000" stroke="none">\n' +
+                    '<path d="M7 314 c-4 -4 -7 -36 -7 -71 l0 -63 106 0 105 0 -3 28 c-3 24 -7 27\n' +
+                    '-46 30 -37 3 -44 0 -49 -17 -7 -27 -53 -30 -53 -3 0 43 24 57 100 57 81 0 100\n' +
+                    '-13 100 -70 0 -51 -18 -66 -88 -72 -51 -5 -62 -9 -60 -22 3 -13 21 -16 106\n' +
+                    '-19 l103 -3 -3 113 -3 113 -151 3 c-82 1 -153 -1 -157 -4z"/>\n' +
+                    '<path d="M2 68 l3 -63 155 0 c139 0 155 2 158 17 3 16 -6 18 -83 18 -105 0\n' +
+                    '-151 17 -166 60 -9 24 -17 30 -40 30 l-30 0 3 -62z"/>\n' +
+                    '</g>\n' +
+                    '</svg>',
                 onClick: async () => {
                     (await miro.board.selection.get()).map(w => w.card.customFields.filter(f => f.tooltip == "[SIX] GOJIRA KEY").map(f => f.value)[0])
                         .forEach(key => { 
