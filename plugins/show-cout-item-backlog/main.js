@@ -203,6 +203,7 @@ miro.onReady(() => {
                     '</svg>',
                 onClick: async () => {
                     (await miro.board.selection.get()).map(w => w.card?.customFields.filter(f => f.tooltip == "[SIX] GOJIRA KEY").map(f => f.value)[0])
+						.filter(key => key)
                         .forEach(key => { 
 							if (key.startWith("EPL-"))
 								window.open("https://gojira-out.enedis.fr/browse/" + key, key);
