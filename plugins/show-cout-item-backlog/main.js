@@ -205,7 +205,7 @@ miro.onReady(() => {
                     (await miro.board.selection.get()).map(w => w.card?.customFields.filter(f => f.tooltip == "[SIX] GOJIRA KEY").map(f => f.value)[0])
 						.filter(key => key)
                         .forEach(key => { 
-							if (key.startWith("EPL-"))
+							if (key.startsWith("EPL-"))
 								window.open("https://gojira-out.enedis.fr/browse/" + key, key);
 							else
 								window.open("https://gojira.enedis.fr/browse/" + key, key);
