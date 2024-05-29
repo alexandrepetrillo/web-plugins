@@ -10,16 +10,16 @@ miro.onReady(() => {
     }
 
     function getJiraCost(w) {
-        try {
-            return w.card.customFields.filter(f => f.tooltip == "[SIX] Coût item backlog").map(f => f.value)[0]
-                || w.card.customFields.filter(f => f.value.match(/^[0-9\.]*$/) && !isNaN(parseFloat(f.value)))[0].value;
-        } catch (e) {
-            try {
-                return w.card.customFields.filter(f => !isNaN(parseFloat(f.value)))[0].value
-            } catch (e) {
-                return ''
-            }
-        }
+		const parseSafe = (f) => {
+			try {
+				f.value.match(/^[0-9\.]*$/) && !isNaN(parseFloat(f.value))
+			} catch (e) {
+				return null
+			}
+		}
+        return w.card.customFields
+			.map(f => ( {key:f.tooltip, value: parseSafe(f)} ) )
+			.filter(f => f.value)
     }
 
     function getPrio(w) {
@@ -30,34 +30,37 @@ miro.onReady(() => {
         }
     }
 
-    async function getCost() {
+    async function getCosts() {
         var widgets = (await miro.board.selection.get()).filter(w => w.type === "CARD")
         var jiras = widgets.map(w => getJiraId(w)).filter(id => (id != null && id !='' && id != ' '))
         var unknowCosts = [];
-        var cost = widgets.map(jira => {
-            var jiraCost = getJiraCost(jira)
-            if (jiraCost == undefined || jiraCost == '') {
-                unknowCosts.push(jira);
-                return 0
-            } else {
-                return parseFloat(jiraCost)
-            }
+		
+		var costs = {}
+		
+		widgets.map(jira => {
+            var jiraCosts = getJiraCost(jira)
+			if (jiraCosts.length == 0) {
+				unknowCosts.push(jira);
+			}
+            jiraCosts.forEach(c => {
+				costs[c.key] = costs[c.key] || {key: c.key, value: 0}
+				costs[c.key].value = costs[c.key].value + c.value
+			})
         })
-            .reduce((a, b) => a + b, 0);
 
         var warn = '';
         if (unknowCosts.length > 0) {
             warn += ', ' + unknowCosts.length + ' coût(s) inconnu(s)';
         }
-        return {jiras, cost, warn, unknowCosts}
+        return {jiras, costs, warn, unknowCosts}
     }
 
     miro.addListener('SELECTION_UPDATED', async (x) => {
         if (x.data.filter(w => w.type === "CARD").length <= 1) {
 			return		
         } else {
-			var {jiras, cost, warn, unknowCosts} = await getCost()
-			miro.showNotification('Coût total ' + cost + warn)
+			var {jiras, costs, warn, unknowCosts} = await getCosts()
+			miro.showNotification('Coût total ' + costs + warn)
 		}
     });
 	
