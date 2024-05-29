@@ -12,7 +12,8 @@ miro.onReady(() => {
     function getJiraCost(w) {
 		const parseSafe = (f) => {
 			try {
-				f.value.match(/^[0-9\.]*$/) && !isNaN(parseFloat(f.value))
+				const v = parseFloat(f.value)
+				return isNaN(v) ? null : v
 			} catch (e) {
 				return null
 			}
