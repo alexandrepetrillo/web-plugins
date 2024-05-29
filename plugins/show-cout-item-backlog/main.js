@@ -202,9 +202,12 @@ miro.onReady(() => {
                     '</g>\n' +
                     '</svg>',
                 onClick: async () => {
-                    (await miro.board.selection.get()).map(w => w.card.customFields.filter(f => f.tooltip == "[SIX] GOJIRA KEY").map(f => f.value)[0])
+                    (await miro.board.selection.get()).map(w => w.card?.customFields.filter(f => f.tooltip == "[SIX] GOJIRA KEY").map(f => f.value)[0])
                         .forEach(key => { 
-                            window.open("https://gojira.enedis.fr/browse/" + key, key);
+							if (key.startWith("EPL-"))
+								window.open("https://gojira-out.enedis.fr/browse/" + key, key);
+							else
+								window.open("https://gojira.enedis.fr/browse/" + key, key);
                         })
                 }
             },
