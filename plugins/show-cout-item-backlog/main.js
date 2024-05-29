@@ -42,10 +42,11 @@ miro.onReady(() => {
             var jiraCosts = getJiraCost(jira)
 			if (jiraCosts.length == 0) {
 				unknowCosts.push(jira);
+				return;
 			}
             jiraCosts.forEach(c => {
-				costs[c.key] = costs[c.key] || {key: c.key, value: 0}
-				costs[c.key].value = costs[c.key].value + c.value
+				costs[c.key] = costs[c.key] || 0
+				costs[c.key] = costs[c.key] + c.value
 			})
         })
 
