@@ -60,7 +60,7 @@ miro.onReady(() => {
 			return		
         } else {
 			var {jiras, costs, warn, unknowCosts} = await getCosts()
-			miro.showNotification('Coût total ' + costs + warn)
+			miro.showNotification('Coût total ' + JSON.stringify(costs) + warn)
 		}
     });
 	
