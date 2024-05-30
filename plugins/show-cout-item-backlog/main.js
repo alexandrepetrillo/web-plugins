@@ -66,7 +66,7 @@ miro.onReady(() => {
             warn += '<br/>' + unknowCosts.length + ' coût(s) inconnu(s)';
         }
 		if (widgets.length != jiras.length) {
-            warn += '<br/>' + (widgets.length - jiras.length) + ' doublons ignorés';
+            warn += '<br/>' + (widgets.length - jiras.length) + ' doublon(s) ignoré(s)';
         }
         return {jiras, costs, warn, unknowCosts}
     }
@@ -131,7 +131,7 @@ miro.onReady(() => {
         var sel = (await miro.board.selection.get())
         sel.filter(w => w.type === "CARD").forEach(w => {
             var cost = getJiraCost(w)
-            if (!cost) {
+            if (!cost || cost.length == 0) {
                 toSelect.push(w.id)
             }
         })
@@ -253,7 +253,7 @@ miro.onReady(() => {
                 positionPriority: 1,
                 onClick: async () => {
 
-                    var {jiras, cost, warn, unknowCosts} = await getCost()
+                    var {jiras, cost, warn, unknowCosts} = await getCosts()
                     var choix = prompt('JIRA sélectionnées. ' +
                         'Tapez 1 pour sélectionner les jiras non estimés ,  ' +
                         '2 pour identifier les doublons , ' +
