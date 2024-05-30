@@ -24,7 +24,7 @@ miro.onReady(() => {
 			}
 		}
         return w.card.customFields
-			.map(f => ( {key:f.tooltip, value: parseSafe(f)} ) )
+			.map(f => ( {key:getProjectKey(w) + " " + f.tooltip, value: parseSafe(f)} ) )
 			.filter(f => f.value)
     }
 
