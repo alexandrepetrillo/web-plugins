@@ -10,8 +10,8 @@ miro.onReady(() => {
     }
 
     function getProjectKey(w) {
-		const keyField = w.card.customFields.filter(f => f.tooltip === "[SIX] GOJIRA KEY");
-		return keyField ? keyField.value.replace(/-.*/, "") : "";
+		const keyFields = w.card.customFields.filter(f => f.tooltip === "[SIX] GOJIRA KEY");
+		]return keyFields.length ? keyFields[0}.value.replace(/-.*/, "") : "";
 	}
 	
     function getJiraCost(w) {
