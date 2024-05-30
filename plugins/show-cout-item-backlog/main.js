@@ -39,11 +39,17 @@ miro.onReady(() => {
     async function getCosts() {
         var widgets = (await miro.board.selection.get()).filter(w => w.type === "CARD")
         var jiras = widgets.map(w => getJiraId(w)).filter(id => (id != null && id !='' && id != ' '))
+		jiras = Array.from(new Set(jiras));
         var unknowCosts = [];
 		
 		var costs = {}
-		
+
+		var ids = []
 		widgets.map(jira => {
+			var id = getJiraId(jira)
+			if(ids.indexOf(id) >= 0) 
+				return
+			ids.push(id)
             var jiraCosts = getJiraCost(jira)
 			if (jiraCosts.length == 0) {
 				unknowCosts.push(jira);
@@ -57,7 +63,10 @@ miro.onReady(() => {
 
         var warn = '';
         if (unknowCosts.length > 0) {
-            warn += ', ' + unknowCosts.length + ' coût(s) inconnu(s)';
+            warn += '<br/>' + unknowCosts.length + ' coût(s) inconnu(s)';
+        }
+		if (widgets.length != jiras.length) {
+            warn += '<br/>' + (widgets.length - jiras.length) + ' doublons ignorés';
         }
         return {jiras, costs, warn, unknowCosts}
     }
@@ -69,7 +78,11 @@ miro.onReady(() => {
 			var {jiras, costs, warn, unknowCosts} = await getCosts()
 			if (Object.values(costs).length === 1) 
 				costs = Object.values(costs)[0];
-			miro.showNotification('Coût total ' + JSON.stringify(costs) + warn)
+			else {
+				costs = JSON.stringify(costs)
+				costs = '<br/>' + costs.replace('{', '').replace('}', '').replaceAll('"', '').replaceAll(',', '<br/>')
+			}
+			miro.showNotification('Coût total :' + costs + warn)
 		}
     });
 	
