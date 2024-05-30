@@ -9,6 +9,11 @@ miro.onReady(() => {
         }
     }
 
+    function getProjectKey(w) {
+		const keyField = w.card.customFields.filter(f => f.tooltip === "[SIX] GOJIRA KEY");
+		return keyField ? keyField.value.replace(/-.*/, "") : "";
+	}
+	
     function getJiraCost(w) {
 		const parseSafe = (f) => {
 			try {
@@ -62,6 +67,8 @@ miro.onReady(() => {
 			return		
         } else {
 			var {jiras, costs, warn, unknowCosts} = await getCosts()
+			if (Object.values(costs).length === 1) 
+				costs = Object.values(costs)[0];
 			miro.showNotification('Coût total ' + JSON.stringify(costs) + warn)
 		}
     });
