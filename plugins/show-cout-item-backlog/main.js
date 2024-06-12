@@ -35,9 +35,11 @@ miro.onReady(() => {
             return ''
         }
     }
+	
+	var filterWidjetJira = w => w.type === "CARD" && w.card?.customFields
 
     async function getCosts() {
-        var widgets = (await miro.board.selection.get()).filter(w => w.type === "CARD")
+        var widgets = (await miro.board.selection.get()).filter(filterWidjetJira)
         var jiras = widgets.map(w => getJiraId(w)).filter(id => (id != null && id !='' && id != ' '))
 		jiras = Array.from(new Set(jiras));
         var unknowCosts = [];
@@ -72,7 +74,7 @@ miro.onReady(() => {
     }
 
     miro.addListener('SELECTION_UPDATED', async (x) => {
-        if (x.data.filter(w => w.type === "CARD").length <= 1) {
+        if (x.data.filter(filterWidjetJira).length <= 1) {
 			return		
         } else {
 			var {jiras, costs, warn, unknowCosts} = await getCosts()
@@ -129,7 +131,7 @@ miro.onReady(() => {
     async function selectJiraWithoutCost() {
         var toSelect = []
         var sel = (await miro.board.selection.get())
-        sel.filter(w => w.type === "CARD").forEach(w => {
+        sel.filter(filterWidjetJira).forEach(w => {
             var cost = getJiraCost(w)
             if (!cost || cost.length == 0) {
                 toSelect.push(w.id)
@@ -139,7 +141,7 @@ miro.onReady(() => {
     }
 
     async function selectDoublons() {
-        var allWidgets = (await miro.board.widgets.get()).filter(w => w.type === "CARD")
+        var allWidgets = (await miro.board.widgets.get()).filter(filterWidjetJira)
         var allLines = (await miro.board.widgets.get()).filter(w => w.type === "LINE")
 
         var map = {}
@@ -177,7 +179,7 @@ miro.onReady(() => {
     }
 
     async function selectP0(resetRotation) {
-        var sel = (await miro.board.selection.get()).filter(w => w.type === "CARD")
+        var sel = (await miro.board.selection.get()).filter(filterWidjetJira)
         if (sel.length === 0)
             sel = (await miro.board.widgets.get())
 
@@ -321,7 +323,7 @@ async function selectUnstorageCards() {
         'T4-2022',
     ];
     let shapes = await miro.board.widgets.get({type: 'SHAPE'});
-    let cards = await miro.board.widgets.get({type: 'CARD'});
+    let cards = await miro.board.widgets.get({type: 'CARD'}).filter(filterWidjetJira);
     let errors = [];
     cards.forEach(async c => {
         shapes.forEach(async s => {
