@@ -74,7 +74,7 @@ miro.onReady(() => {
     }
 
     miro.addListener('SELECTION_UPDATED', async (x) => {
-        if (x.data.filter(filterWidjetJira).length <= 1) {
+        if (x.data.filter(w => w.type == "CARD").length <= 1) {
 			return		
         } else {
 			var {jiras, costs, warn, unknowCosts} = await getCosts()
@@ -130,7 +130,7 @@ miro.onReady(() => {
 
     async function selectJiraWithoutCost() {
         var toSelect = []
-        var sel = (await miro.board.selection.get())
+        var sel = (await miro.board.widgets.get())
         sel.filter(filterWidjetJira).forEach(w => {
             var cost = getJiraCost(w)
             if (!cost || cost.length == 0) {
