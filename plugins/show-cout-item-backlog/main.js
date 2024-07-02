@@ -270,12 +270,17 @@ miro.onReady(() => {
 
                     var {jiras, cost, warn, unknowCosts, gojiras} = await getCosts()
                     var choix = prompt('JIRA sélectionnées. ' +
-                        'Tapez 1 pour sélectionner les jiras non estimés ,  ' +
-                        '2 pour identifier les doublons , ' +
-                        '3 pour sélectionner les P0 , ' +
+                        'Tapez ' +
+						'0 pour récupérer les ids GOJIRA,' +
+						'1 pour sélectionner les jiras non estimés, ' +
+                        '2 pour identifier les doublons, ' +
+                        '3 pour sélectionner les P0, ' +
                         '4 pour sélectionner les JIRA mal rangées', jiras.join(', '))
                     console.log('JIRA sélectionnées : ' + jiras.join(', ') + ',' + gojiras.join(', '))
-                    if (choix == '1') {
+                    if (choix == '0') {
+                        console.log("choix ids GOJIRA")
+                        prompt('IDS GOJIRA', gojiras.join(', '))
+                    } else if (choix == '1') {
                         console.log("choix selectJiraWithoutCost")
                         await selectJiraWithoutCost()
                     } else if (choix == '2') {
