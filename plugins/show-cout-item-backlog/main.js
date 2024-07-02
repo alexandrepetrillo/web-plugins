@@ -8,6 +8,14 @@ miro.onReady(() => {
             console.log(w)
         }
     }
+    function getGojiraId(w) {
+        try {
+            return w.card.customFields.filter(f => f.tooltip.indexOf("GOJIRA KEY")!=-1).map(f => f.value)[0]
+        } catch (e) {
+            console.log('impossible de récuperer le jira ')
+            console.log(w)
+        }
+    }
 
     function getProjectKey(w) {
 		const keyFields = w.card.customFields.filter(f => f.tooltip === "[SIX] GOJIRA KEY");
@@ -42,6 +50,11 @@ miro.onReady(() => {
         var widgets = (await miro.board.selection.get()).filter(filterWidjetJira)
         var jiras = widgets.map(w => getJiraId(w)).filter(id => (id != null && id !='' && id != ' '))
 		jiras = Array.from(new Set(jiras));
+		
+		var gojiras = widgets.map(w => getGojiraId(w)).filter(id => (id != null && id !='' && id != ' '))
+		gojiras = Array.from(new Set(gojiras));
+
+
         var unknowCosts = [];
 		
 		var costs = {}
@@ -70,7 +83,7 @@ miro.onReady(() => {
 		if (widgets.length != jiras.length) {
             warn += '<br/>' + (widgets.length - jiras.length) + ' doublon(s) ignoré(s)';
         }
-        return {jiras, costs, warn, unknowCosts}
+        return {jiras, costs, warn, unknowCosts, gojiras}
     }
 
     miro.addListener('SELECTION_UPDATED', async (x) => {
@@ -255,13 +268,13 @@ miro.onReady(() => {
                 positionPriority: 1,
                 onClick: async () => {
 
-                    var {jiras, cost, warn, unknowCosts} = await getCosts()
+                    var {jiras, cost, warn, unknowCosts, gojiras} = await getCosts()
                     var choix = prompt('JIRA sélectionnées. ' +
                         'Tapez 1 pour sélectionner les jiras non estimés ,  ' +
                         '2 pour identifier les doublons , ' +
                         '3 pour sélectionner les P0 , ' +
                         '4 pour sélectionner les JIRA mal rangées', jiras.join(', '))
-                    console.log('JIRA sélectionnées : ' + jiras.join(', '))
+                    console.log('JIRA sélectionnées : ' + jiras.join(', ') + ',' + gojiras.join(', '))
                     if (choix == '1') {
                         console.log("choix selectJiraWithoutCost")
                         await selectJiraWithoutCost()
