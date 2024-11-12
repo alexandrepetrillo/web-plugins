@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://miro.com/app/static/sdk/v2/miro.js"></script>
     <title>Gojira Link</title>
-    <script type="module" crossorigin src="/assets/app.53d7c9b0.js"></script>
+    <script type="module" crossorigin src="/assets/app.e79e111a.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/style.a87c9e06.js">
     <link rel="stylesheet" href="/assets/style.c1c661e5.css">
   </head>
   <body>
@@ -21,7 +22,9 @@
           <p class="nb">Note : Il faut au moins avoir un champ de type numérique pour que la somme fonctionne</p>
           <hr>
           <h1>Identifier les doublons</h1>
-          <p class="detail"><button id="identifierDoublons">Identifier</button></p>
+          <p class="detail">En appuyant sur ce bouton, des connecteurs seront créés afin d'identifier les tickets en doublons</p>
+          <button id="identifierDoublons">Identifier</button>
+          <button id="identifierDoublonsCancel">Supprimer les connecteurs</button>
           <hr>
           <h1>Derniers tickets sélectionnés</h1>
           <p class="detail">Sélectionner des tickets pour obtenir leurs ids</p>
@@ -29,6 +32,7 @@
           <p>Gojira <span id="gojiraIds"></span></p>
           <hr>
           <img id="rocket" src="/assets/rocket.a7f80672.jpg" alt="" />
+          <img id="rocket2" src="/assets/rocket2.fd87af8b.png" alt="" style="display: none"/>
 
         </div>
       </div>
