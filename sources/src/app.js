@@ -1,7 +1,5 @@
 import './assets/style.css';
 
-console.log('LOAD APP.JS');
-
 function getJiraId(w) {
     try {
         return w.fields.filter(f => f.tooltip.indexOf("Issue type") != -1).map(f => f.value)[0];
@@ -9,6 +7,14 @@ function getJiraId(w) {
         console.log('Impossible de récupérer le Jira');
         console.log(w);
     }
+}
+
+export async function identifierDoublonsCancel(){
+    const allLines = (await miro.board.get({type: 'connector'}))
+        .filter(l => l.captions.filter(c => c.content === 'doublon').length > 0);
+    console.log(allLines);
+    allLines.forEach(l => miro.board.remove(l))
+    
 }
 
 export async function identifierDoublons(){
@@ -34,7 +40,12 @@ export async function identifierDoublons(){
                         end: {
                             item: otherWidgetId
                         },
-                        style: { color: "#f24726", strokeWidth: 8 }
+                        style: { strokeColor: "#f24726", strokeWidth: 8 },
+                        captions: [
+                            {
+                                content: 'doublon',
+                            }
+                        ]
                     });
                 }
             });
@@ -43,10 +54,11 @@ export async function identifierDoublons(){
 }
 
 document.getElementById("identifierDoublons").onclick = identifierDoublons;
+document.getElementById("identifierDoublonsCancel").onclick = identifierDoublonsCancel;
 document.getElementById("rocket").onclick = () => {
-    document.getElementById("rocket").src = "/assets/rocket2.png"
+    document.getElementById("rocket").style.display = 'none';
+    document.getElementById("rocket2").style.display = 'block';
 };
-
 
 const isGojiraTicket = (item) => {
     return item.type === 'card' && item.fields.some(field => field.tooltip.indexOf("GOJIRA KEY") > -1);
