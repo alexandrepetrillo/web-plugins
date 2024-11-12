@@ -14,7 +14,7 @@ export async function identifierDoublonsCancel(){
         .filter(l => l.captions.filter(c => c.content === 'doublon').length > 0);
     console.log(allLines);
     allLines.forEach(l => miro.board.remove(l))
-    
+
 }
 
 export async function identifierDoublons(){
