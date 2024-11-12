@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="68e71cc2-a368-445b-a350-9afe914cf1e1" name="Changes" comment="séparer source et build">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/app.html" beforeDir="false" afterPath="$PROJECT_DIR$/sources/app.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/sources/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.html" beforeDir="false" afterPath="$PROJECT_DIR$/app.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app.53d7c9b0.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/rocket.238a55ac.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +87,7 @@
       <workItem from="1731404253176" duration="88000" />
       <workItem from="1731404351406" duration="67000" />
       <workItem from="1731404421807" duration="2892000" />
-      <workItem from="1731408692006" duration="3568000" />
+      <workItem from="1731408692006" duration="6580000" />
     </task>
     <task id="LOCAL-00001" summary="séparer source et build">
       <option name="closed" value="true" />
