@@ -1,0 +1,20 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: syspo-jean-jira
+  namespace: calamar-2li-qualif-02
+  labels:
+    app: syspo-jean-jira
+    env: qual
+    project: syspo
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`syspo-jean-jira-qual.calamar.had.enedis.fr`)
+      kind: Rule
+      services:
+        - name: syspo-jean-jira
+          port: 80
+          scheme: http
+  tls: {}
