@@ -4,29 +4,35 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://miro.com/app/static/sdk/v2/miro.js"></script>
-    <title>Jco Links</title>
-    <script type="module" crossorigin src="/assets/style.a87c9e06.js"></script>
+    <title>Gojira Link</title>
+    <script type="module" crossorigin src="/assets/app.53d7c9b0.js"></script>
     <link rel="stylesheet" href="/assets/style.c1c661e5.css">
   </head>
   <body>
-    
     <div id="root">
       <div class="grid wrapper">
         <div class="cs1 ce12">
           <h1>Ouvrir dans GoJira</h1>
-          <p class="detail">Selectionner des tickets JIRA et cliquer sur l'icone Gojira-link</p>
+          <p class="detail">Sélectionner des tickets JIRA et cliquer sur l'icone Gojira-link</p>
           <p class="nb">Note : Il faut que le champs "[SIX] GOJIRA KEY" soit affiché dans le board (advanced fields)</p>
           <hr>
           <h1>Comptez l'estimation de plusieurs tickets</h1>
-          <p class="detail">Selectionner un <span style="font-weight: bold">ensemble</span> de tickets JIRA</p>
+          <p class="detail">Sélectionner un <span style="font-weight: bold">ensemble</span> de tickets JIRA</p>
           <p class="nb">Note : Il faut au moins avoir un champ de type numérique pour que la somme fonctionne</p>
           <hr>
-          <img src="/assets/rocket.238a55ac.png" alt="" />
+          <h1>Identifier les doublons</h1>
+          <p class="detail"><button id="identifierDoublons">Identifier</button></p>
+          <hr>
+          <h1>Derniers tickets sélectionnés</h1>
+          <p class="detail">Sélectionner des tickets pour obtenir leurs ids</p>
+          <p>Jira <span id="jiraIds"></span></p>
+          <p>Gojira <span id="gojiraIds"></span></p>
+          <hr>
+          <img id="rocket" src="/assets/rocket.a7f80672.jpg" alt="" />
 
         </div>
       </div>
     </div>
-    
     
   </body>
 </html>
