@@ -25,6 +25,10 @@ const isGojiraTicket = (item) => {
     return item.type === 'card' && item.fields.some(field => field.tooltip.indexOf("GOJIRA KEY") > -1);
 }
 
+const isCard = (item) => {
+    return item.type === 'card';
+}
+
 const getJiraCost = (item) => {
     const parseSafe = (f) => {
         try {
@@ -64,18 +68,12 @@ export async function getCosts(items) {
 
 export async function listenSelection() {
     miro.board.ui.on('selection:update', async (event) => {
-        const gojiraKey = event.items
-            // On ne garde que les cards JIRA ayant un GOJIRA KEY
-            .filter(isGojiraTicket)
-            // On recupère la GOJIRA Key au format SYSPO-QQCHOSE
-            .map(gojiraCard => gojiraCard.fields.filter(field => field.tooltip === "[SIX] GOJIRA KEY")[0].value);
-
-        // Si un seul ticket selectionné, on l'ajoute pour la redriection
-        if (gojiraKey.length <= 1) {
-            return ;
+		const cards = event.items
+            .filter(isCard)
+		// Si un seul ticket selectionné, on ne fait rien
+        if (cards.length <= 1) {
+            return;
         }
-
-        // Sinon on vide le ticket selectionnée + On gèré l'affichage d'une popup avec le coùt globale
         const { jiras, costs, warn } = await getCosts(event.items);
         const costSummary = Object.values(costs).length === 1 ? costs[Object.keys(costs)[0]] : JSON.stringify(costs).replace(/{|}|"/g, '').replaceAll(',', '<br/>');
         console.log(costSummary)
@@ -86,7 +84,7 @@ export async function listenSelection() {
 
 export async function listenForRedirectGojira() {
     miro.board.ui.on('icon:click', async () => {
-        const selection = await miro.board.getSelection();
+        const selection = (await miro.board.getSelection()).filter(isCard);
         selection
             .map(w => getGojiraId(w))
             .filter(key => key)
@@ -101,5 +99,6 @@ export async function listenForRedirectGojira() {
     });
 }
 
+console.log('CHARGEMENT GOJIRA LINK.....................');
 listenSelection();
 listenForRedirectGojira();
