@@ -77,7 +77,13 @@ miro.board.ui.on('selection:update', async (event) => {
         .map(gojiraCard => gojiraCard.fields.filter(field => field.tooltip.indexOf("GOJIRA KEY") != -1)[0].value);
 	console.log(jiraIds);
 
-    document.getElementById("jiraIds").innerText = 'key in ('+jiraIds.join(', ')+')';
-    document.getElementById("gojiraIds").innerText = 'key in ('+gojiraIds.join(', ')+')';
+	const jirakeys = 'key in ('+jiraIds.join(', ')+')'
+	const gojirakeys = 'key in ('+gojiraIds.join(', ')+')'
+
+    document.getElementById("jiraIds").innerText = jirakeys;
+    document.getElementById("gojiraIds").innerText = gojirakeys;
+
+    document.getElementById("jira-href").href = "https://sixenedis.atlassian.net/issues/?jql=" + encodeURIComponent(jirakeys);
+    document.getElementById("gojira-href").href = "https://gojira.enedis.fr/issues/?jql=" + encodeURIComponent(gojirakeys);
 
 });
