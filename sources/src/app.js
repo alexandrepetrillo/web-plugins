@@ -77,7 +77,7 @@ miro.board.ui.on('selection:update', async (event) => {
         .map(gojiraCard => gojiraCard.fields.filter(field => field.tooltip.indexOf("GOJIRA KEY") != -1)[0].value);
 	console.log(jiraIds);
 
-    document.getElementById("jiraIds").innerText = '('+jiraIds.join('; ')+')';
-    document.getElementById("gojiraIds").innerText = '('+gojiraIds.join('; ')+')';
+    document.getElementById("jiraIds").innerText = 'key in ('+jiraIds.join(', ')+')';
+    document.getElementById("gojiraIds").innerText = 'key in ('+gojiraIds.join(', ')+')';
 
 });
